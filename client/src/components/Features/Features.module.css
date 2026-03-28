@@ -1,0 +1,13 @@
+.featuresWrap { background: var(--surface); padding: 80px 5%; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.featuresInner { max-width: 1200px; margin: 0 auto; }
+.sectionTag { display: inline-block; padding: 6px 16px; background: var(--brand-light); color: var(--brand); font-size: 12px; font-weight: 700; letter-spacing: 1px; border-radius: 100px; text-transform: uppercase; margin-bottom: 16px; }
+.sectionTitle { font-family: var(--font-head); font-size: 38px; font-weight: 700; letter-spacing: -1px; margin-bottom: 12px; }
+.sectionSub { font-size: 17px; color: var(--text-secondary); max-width: 540px; line-height: 1.65; }
+.featuresGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 56px; }
+.featCard { background: var(--white); padding: 28px; border-radius: 20px; border: 1px solid var(--border); transition: all 0.25s ease; }
+.featCard:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(0,0,0,0.06); }
+.featIcon { width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 18px; }
+.featTitle { font-family: var(--font-head); font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+.featDesc { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+@media (max-width: 900px) { .featuresGrid { grid-template-columns: 1fr; } .sectionTitle { font-size: 28px; } }
+@media (min-width: 600px) and (max-width: 900px) { .featuresGrid { grid-template-columns: repeat(2, 1fr); } }

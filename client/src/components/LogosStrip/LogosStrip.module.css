@@ -1,0 +1,5 @@
+.strip { background: var(--surface); padding: 32px 5%; text-align: center; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.label { font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); margin-bottom: 24px; font-weight: 600; }
+.logosRow { display: flex; align-items: center; justify-content: center; gap: 48px; flex-wrap: wrap; max-width: 1200px; margin: 0 auto; }
+.logoItem { font-family: var(--font-head); font-size: 18px; font-weight: 700; color: var(--text-muted); letter-spacing: -0.5px; opacity: 0.55; transition: opacity 0.2s; }
+.logoItem:hover { opacity: 0.8; }

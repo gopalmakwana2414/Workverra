@@ -1,0 +1,27 @@
+.section { padding: 80px 5%; }
+.sectionInner { max-width: 1200px; margin: 0 auto; }
+.sectionTag { display: inline-block; padding: 6px 16px; background: var(--brand-light); color: var(--brand); font-size: 12px; font-weight: 700; letter-spacing: 1px; border-radius: 100px; text-transform: uppercase; margin-bottom: 16px; }
+.sectionTitle { font-family: var(--font-head); font-size: 38px; font-weight: 700; letter-spacing: -1px; margin-bottom: 12px; }
+.sectionSub { font-size: 17px; color: var(--text-secondary); max-width: 540px; line-height: 1.65; }
+.workersGrid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 48px; }
+.workerCard { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 24px; transition: all 0.25s ease; cursor: pointer; }
+.workerCard:hover { border-color: var(--brand); box-shadow: 0 8px 32px rgba(26,86,219,0.08); transform: translateY(-3px); }
+.workerCard.featured { border-color: var(--brand); box-shadow: 0 8px 32px rgba(26,86,219,0.08); }
+.cardTop { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; }
+.workerAvatar { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 18px; }
+.workerRate { font-family: var(--font-head); font-size: 17px; font-weight: 700; color: var(--brand); }
+.workerRate span { font-size: 12px; font-weight: 500; color: var(--text-muted); }
+.workerName { font-family: var(--font-head); font-size: 17px; font-weight: 700; margin-bottom: 2px; }
+.workerRole { font-size: 13px; color: var(--text-secondary); }
+.workerLoc { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+.ratingRow { display: flex; align-items: center; gap: 4px; margin-top: 10px; }
+.stars { color: var(--accent); font-size: 13px; letter-spacing: 1px; }
+.reviewCount { font-size: 12px; color: var(--text-muted); }
+.verifiedBadge { display: inline-flex; padding: 3px 10px; background: var(--success-light); color: var(--success); font-size: 11px; font-weight: 600; border-radius: 100px; margin-top: 8px; }
+.divider { height: 1px; background: var(--border); margin: 14px 0; }
+.workerSkills { display: flex; flex-wrap: wrap; gap: 6px; }
+.skillTag { padding: 4px 10px; border-radius: 100px; background: var(--brand-light); color: var(--brand); font-size: 11px; font-weight: 600; }
+.browseAll { text-align: center; margin-top: 36px; }
+.btnGhost { padding: 12px 28px; border-radius: 8px; font-size: 15px; font-weight: 500; color: var(--text-primary); background: transparent; border: 1px solid var(--border); cursor: pointer; transition: all 0.2s; }
+.btnGhost:hover { border-color: var(--brand); color: var(--brand); }
+@media (max-width: 900px) { .workersGrid { grid-template-columns: 1fr; } .sectionTitle { font-size: 28px; } }

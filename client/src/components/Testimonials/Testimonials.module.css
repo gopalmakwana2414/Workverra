@@ -1,0 +1,15 @@
+.section { padding: 80px 5%; }
+.sectionInner { max-width: 1200px; margin: 0 auto; }
+.sectionTag { display: inline-block; padding: 6px 16px; background: var(--brand-light); color: var(--brand); font-size: 12px; font-weight: 700; letter-spacing: 1px; border-radius: 100px; text-transform: uppercase; margin-bottom: 16px; }
+.sectionTitle { font-family: var(--font-head); font-size: 38px; font-weight: 700; letter-spacing: -1px; margin-bottom: 48px; }
+.tGrid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+.tCard { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 28px; transition: all 0.25s ease; }
+.tCard:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.06); transform: translateY(-2px); }
+.tQuote { font-size: 15px; line-height: 1.7; color: var(--text-primary); margin-bottom: 20px; padding-left: 20px; position: relative; }
+.tQuote::before { content: '\201C'; position: absolute; left: 0; top: -4px; font-size: 36px; font-family: Georgia, serif; color: var(--brand); line-height: 1; }
+.tAuthor { display: flex; align-items: center; gap: 12px; }
+.tAvatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 14px; flex-shrink: 0; }
+.tName { font-size: 14px; font-weight: 600; }
+.tRole { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
+.tStars { color: var(--accent); font-size: 12px; margin-top: 3px; }
+@media (max-width: 900px) { .tGrid { grid-template-columns: 1fr; } .sectionTitle { font-size: 28px; } }

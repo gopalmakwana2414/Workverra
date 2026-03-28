@@ -1,0 +1,213 @@
+/* ── Gradient navbar ───────────────────────────────── */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: linear-gradient(135deg, #6c3fe8 0%, #a855f7 40%, #ec4899 100%);
+  border-bottom: 1px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.nav.scrolled {
+  box-shadow: 0 4px 32px rgba(108, 63, 232, 0.35);
+  background: linear-gradient(135deg, #5a32cc 0%, #9333ea 40%, #db2777 100%);
+}
+
+/* ── Inner layout ───────────────────────────────────── */
+.navInner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 5%;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+}
+
+/* ── Logo ───────────────────────────────────────────── */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+/* Logo image — increase height so it's clearly visible */
+.logoImg {
+  height: 42px;
+  width: auto;
+  object-fit: contain;
+  /* White drop shadow makes logo pop on gradient bg */
+  filter: drop-shadow(0 2px 6px rgba(255,255,255,0.3));
+  border-radius: 8px;
+}
+
+/* Workverra text next to logo */
+.logoText {
+  font-size: 20px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.15);
+  font-family: var(--font-head, 'Inter', sans-serif);
+}
+
+/* ── Nav links ──────────────────────────────────────── */
+.navLinks {
+  display: flex;
+  gap: 36px;
+  list-style: none;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+.navLinks a {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.88);
+  text-decoration: none;
+  transition: all 0.2s;
+  position: relative;
+  padding-bottom: 2px;
+}
+
+/* Underline slide on hover */
+.navLinks a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #fff;
+  border-radius: 2px;
+  transition: width 0.25s ease;
+}
+
+.navLinks a:hover {
+  color: #ffffff;
+}
+
+.navLinks a:hover::after {
+  width: 100%;
+}
+
+/* ── CTA Buttons ────────────────────────────────────── */
+.navCta {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* Sign in — white outline ghost */
+.btnGhost {
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1.5px solid rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: all 0.2s;
+  backdrop-filter: blur(4px);
+}
+
+.btnGhost:hover {
+  background: rgba(255, 255, 255, 0.22);
+  border-color: #ffffff;
+}
+
+/* Post a Job — solid white button with gradient text */
+.btnPrimary {
+  padding: 9px 22px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #7c3aed;
+  background: #ffffff;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.01em;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+}
+
+.btnPrimary:hover {
+  background: #f3e8ff;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+}
+
+/* ── Hamburger ──────────────────────────────────────── */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  padding: 6px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: #ffffff;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+
+.hamburgerOpen span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburgerOpen span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.hamburgerOpen span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ── Mobile ─────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .navLinks {
+    display: none;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    right: 0;
+    /* Continues the gradient into mobile menu */
+    background: linear-gradient(180deg, #9333ea 0%, #a855f7 100%);
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    padding: 20px 5% 28px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    z-index: 99;
+    animation: slideDown 0.2s ease;
+  }
+
+  .navLinks.open {
+    display: flex;
+  }
+
+  /* Show Sign in inside mobile menu too */
+  .navLinks::after {
+    content: '';
+    display: block;
+  }
+
+  .navCta {
+    display: none;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
