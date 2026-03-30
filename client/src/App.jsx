@@ -3,33 +3,63 @@ import Navbar from './components/Navbar/Navbar'
 import Footer from './components/Footer/Footer'
 import Home from './pages/Home'
 import Login from './pages/Login/Login'
+import Register from './pages/Register/Register'
 import Search from './pages/Search/Search'
+import WorkerProfile from './pages/WorkerProfile/WorkerProfile'
+import WorkerDashboard from './pages/WorkerDashboard/WorkerDashboard'
+import EmployerDashboard from './pages/EmployerDashboard/EmployerDashboard'
 import './styles/globals.css'
 
+// Pages without Navbar/Footer (full-screen layouts)
+const AuthLayout = ({ children }) => <>{children}</>
+
+// Pages with Navbar/Footer
+const MainLayout = ({ children }) => (
+  <>
+    <Navbar />
+    {children}
+    <Footer />
+  </>
+)
+
+// Dashboard layout (no footer, has its own sidebar)
+const DashLayout = ({ children }) => (
+  <>
+    <Navbar />
+    {children}
+  </>
+)
+
 const Placeholder = ({ title }) => (
-  <div style={{ padding: '120px 5%', textAlign: 'center', fontFamily: 'Sora, sans-serif' }}>
-    <h1 style={{ fontSize: 32, marginBottom: 12 }}>{title}</h1>
-    <p style={{ color: '#4B5563' }}>Coming soon — build this next!</p>
+  <div style={{ padding:'120px 5%', textAlign:'center', fontFamily:'Sora, sans-serif' }}>
+    <h1 style={{ fontSize:32, marginBottom:12 }}>{title}</h1>
+    <p style={{ color:'#4B5563' }}>Coming soon!</p>
   </div>
 )
 
 function App() {
   return (
     <Router>
-      <Navbar />
       <Routes>
-        <Route path="/"                      element={<Home />} />
-        <Route path="/login"                 element={<Login />} />
-        <Route path="/search"                element={<Search />} />
-        <Route path="/register"              element={<Placeholder title="Register — Coming Soon" />} />
-        <Route path="/worker/:id"            element={<Placeholder title="Worker Profile — Coming Soon" />} />
-        <Route path="/book"                  element={<Placeholder title="Booking — Coming Soon" />} />
-        <Route path="/dashboard/worker"      element={<Placeholder title="Worker Dashboard — Coming Soon" />} />
-        <Route path="/dashboard/employer"    element={<Placeholder title="Employer Dashboard — Coming Soon" />} />
-        <Route path="/admin"                 element={<Placeholder title="Admin Panel — Coming Soon" />} />
-        <Route path="*"                      element={<Placeholder title="404 — Page Not Found" />} />
+        {/* Main site pages */}
+        <Route path="/" element={<MainLayout><Home /></MainLayout>} />
+        <Route path="/search" element={<MainLayout><Search /></MainLayout>} />
+        <Route path="/worker/:id" element={<MainLayout><WorkerProfile /></MainLayout>} />
+
+        {/* Auth pages — full screen, no nav/footer */}
+        <Route path="/login" element={<AuthLayout><Login /></AuthLayout>} />
+        <Route path="/register" element={<AuthLayout><Register /></AuthLayout>} />
+
+        {/* Dashboard pages — nav only, no footer */}
+        <Route path="/dashboard/worker" element={<DashLayout><WorkerDashboard /></DashLayout>} />
+        <Route path="/dashboard/employer" element={<DashLayout><EmployerDashboard /></DashLayout>} />
+
+        {/* Admin — placeholder for now */}
+        <Route path="/admin" element={<DashLayout><Placeholder title="Admin Panel — Coming Soon" /></DashLayout>} />
+
+        {/* 404 */}
+        <Route path="*" element={<MainLayout><Placeholder title="404 — Page Not Found" /></MainLayout>} />
       </Routes>
-      <Footer />
     </Router>
   )
 }
