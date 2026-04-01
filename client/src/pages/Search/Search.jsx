@@ -1,305 +1,213 @@
-import { useState, useMemo } from 'react'
-import { useNavigate } from 'react-router-dom'
-import {
-  workers,
-  SKILLS_LIST,
-  CITIES,
-  getWorkersBySkill,
-  getWorkersByCity,
-  formatCurrency,
-} from '../../utils/dummyData'
+import { useState, useMemo, useEffect } from 'react'
+import { useNavigate, useSearchParams } from 'react-router-dom'
+import { workers, SKILLS_LIST, CITIES, formatCurrency } from '../../utils/dummyData'
 import styles from './Search.module.css'
 
 const SORT_OPTIONS = [
   { value: 'rating', label: 'Top Rated' },
-  { value: 'rate_low', label: 'Price: Low to High' },
-  { value: 'rate_high', label: 'Price: High to Low' },
-  { value: 'reviews', label: 'Most Reviewed' },
-  { value: 'experience', label: 'Most Experienced' },
+  { value: 'rate_low', label: 'Price: Low → High' },
+  { value: 'rate_high', label: 'Price: High → Low' },
+  { value: 'jobs', label: 'Most Jobs Done' },
 ]
+
+const PAGE_SIZE = 4
 
 const Search = () => {
   const navigate = useNavigate()
-  const [query, setQuery] = useState('')
-  const [selectedSkill, setSelectedSkill] = useState('All')
-  const [selectedCity, setSelectedCity] = useState('All')
-  const [sortBy, setSortBy] = useState('rating')
-  const [minRating, setMinRating] = useState(0)
-  const [verifiedOnly, setVerifiedOnly] = useState(false)
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  const [skill, setSkill] = useState(searchParams.get('skill') || '')
+  const [city, setCity] = useState(searchParams.get('city') || '')
+  const [sort, setSort] = useState('rating')
   const [availableOnly, setAvailableOnly] = useState(false)
-  const [maxRate, setMaxRate] = useState(1000)
+  const [verifiedOnly, setVerifiedOnly] = useState(false)
+  const [query, setQuery] = useState(searchParams.get('q') || '')
+  const [page, setPage] = useState(1)
   const [sidebarOpen, setSidebarOpen] = useState(false)
+
+  // Sync query from URL
+  useEffect(() => {
+    const q = searchParams.get('q')
+    if (q) setQuery(q)
+  }, [searchParams])
 
   const filtered = useMemo(() => {
     let result = [...workers]
 
-    // Text search
-    if (query.trim()) {
+    if (query) {
       const q = query.toLowerCase()
-      result = result.filter(
-        (w) =>
-          w.name.toLowerCase().includes(q) ||
-          w.skill.toLowerCase().includes(q) ||
-          w.skills.some((s) => s.toLowerCase().includes(q)) ||
-          w.city.toLowerCase().includes(q)
+      result = result.filter(w =>
+        w.name.toLowerCase().includes(q) ||
+        w.skill.toLowerCase().includes(q) ||
+        w.skills.some(s => s.toLowerCase().includes(q))
       )
     }
+    if (skill) result = result.filter(w => w.skill === skill)
+    if (city) result = result.filter(w => w.city === city)
+    if (availableOnly) result = result.filter(w => w.available)
+    if (verifiedOnly) result = result.filter(w => w.verified)
 
-    // Skill filter
-    if (selectedSkill !== 'All') {
-      result = result.filter((w) => w.skill === selectedSkill)
-    }
-
-    // City filter
-    if (selectedCity !== 'All') {
-      result = result.filter((w) => w.city === selectedCity)
-    }
-
-    // Rating filter
-    if (minRating > 0) {
-      result = result.filter((w) => w.rating >= minRating)
-    }
-
-    // Verified filter
-    if (verifiedOnly) {
-      result = result.filter((w) => w.verified)
-    }
-
-    // Available filter
-    if (availableOnly) {
-      result = result.filter((w) => w.available)
-    }
-
-    // Max rate filter
-    result = result.filter((w) => w.hourlyRate <= maxRate)
-
-    // Sort
-    switch (sortBy) {
-      case 'rating':
-        result.sort((a, b) => b.rating - a.rating)
-        break
-      case 'rate_low':
-        result.sort((a, b) => a.hourlyRate - b.hourlyRate)
-        break
-      case 'rate_high':
-        result.sort((a, b) => b.hourlyRate - a.hourlyRate)
-        break
-      case 'reviews':
-        result.sort((a, b) => b.totalReviews - a.totalReviews)
-        break
-      case 'experience':
-        result.sort((a, b) => b.experience - a.experience)
-        break
-      default:
-        break
-    }
+    result.sort((a, b) => {
+      if (sort === 'rating') return b.rating - a.rating
+      if (sort === 'rate_low') return a.hourlyRate - b.hourlyRate
+      if (sort === 'rate_high') return b.hourlyRate - a.hourlyRate
+      if (sort === 'jobs') return b.jobsDone - a.jobsDone
+      return 0
+    })
 
     return result
-  }, [query, selectedSkill, selectedCity, sortBy, minRating, verifiedOnly, availableOnly, maxRate])
+  }, [query, skill, city, sort, availableOnly, verifiedOnly])
 
-  const resetFilters = () => {
-    setQuery('')
-    setSelectedSkill('All')
-    setSelectedCity('All')
-    setSortBy('rating')
-    setMinRating(0)
-    setVerifiedOnly(false)
-    setAvailableOnly(false)
-    setMaxRate(1000)
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
+  const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+
+  const clearFilters = () => {
+    setSkill(''); setCity(''); setQuery('')
+    setAvailableOnly(false); setVerifiedOnly(false)
+    setPage(1)
   }
 
-  const activeFilterCount = [
-    selectedSkill !== 'All',
-    selectedCity !== 'All',
-    minRating > 0,
-    verifiedOnly,
-    availableOnly,
-    maxRate < 1000,
-  ].filter(Boolean).length
+  const activeFilterCount = [skill, city, availableOnly, verifiedOnly].filter(Boolean).length
 
   return (
     <div className={styles.page}>
-      {/* Search Header */}
+
+      {/* ── Search Header ── */}
       <div className={styles.searchHeader}>
         <div className={styles.searchHeaderInner}>
-          <div className={styles.searchBarWrap}>
-            <span className={styles.searchIcon}>🔍</span>
+          <form className={styles.searchBar} onSubmit={e => { e.preventDefault(); setPage(1) }}>
+            <span className={styles.searchIco}>🔍</span>
             <input
-              type="text"
-              className={styles.searchBar}
-              placeholder="Search by skill, name, or city..."
+              className={styles.searchInput}
+              placeholder="Search by skill, name (e.g. Electrician, Mohan)..."
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              onChange={e => { setQuery(e.target.value); setPage(1) }}
             />
             {query && (
-              <button className={styles.clearSearch} onClick={() => setQuery('')}>✕</button>
+              <button type="button" className={styles.clearSearch} onClick={() => setQuery('')}>✕</button>
             )}
-          </div>
+          </form>
 
-          <div className={styles.headerRight}>
-            <select
-              className={styles.sortSelect}
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-            >
-              {SORT_OPTIONS.map((opt) => (
-                <option key={opt.value} value={opt.value}>{opt.label}</option>
-              ))}
-            </select>
-
+          <div className={styles.sortRow}>
             <button
-              className={`${styles.filterToggle} ${sidebarOpen ? styles.filterActive : ''}`}
-              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className={`${styles.filterToggle} ${activeFilterCount > 0 ? styles.filterActive : ''}`}
+              onClick={() => setSidebarOpen(v => !v)}
             >
               ⚙ Filters {activeFilterCount > 0 && <span className={styles.filterBadge}>{activeFilterCount}</span>}
             </button>
+            <select className={styles.sortSelect} value={sort} onChange={e => { setSort(e.target.value); setPage(1) }}>
+              {SORT_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+            </select>
           </div>
         </div>
       </div>
 
-      <div className={styles.mainLayout}>
-        {/* Sidebar Filters */}
+      <div className={styles.layout}>
+
+        {/* ── Sidebar Filters ── */}
         <aside className={`${styles.sidebar} ${sidebarOpen ? styles.sidebarOpen : ''}`}>
-          <div className={styles.sidebarHeader}>
-            <h3 className={styles.sidebarTitle}>Filters</h3>
+          <div className={styles.sidebarHead}>
+            <h3>Filters</h3>
             {activeFilterCount > 0 && (
-              <button className={styles.resetBtn} onClick={resetFilters}>Reset all</button>
+              <button className={styles.clearBtn} onClick={clearFilters}>Clear all</button>
             )}
           </div>
 
-          {/* Skill */}
           <div className={styles.filterGroup}>
-            <label className={styles.filterLabel}>Skill / Category</label>
-            <div className={styles.skillGrid}>
-              <button
-                className={`${styles.skillPill} ${selectedSkill === 'All' ? styles.skillActive : ''}`}
-                onClick={() => setSelectedSkill('All')}
-              >
-                All
-              </button>
-              {SKILLS_LIST.map((skill) => (
-                <button
-                  key={skill}
-                  className={`${styles.skillPill} ${selectedSkill === skill ? styles.skillActive : ''}`}
-                  onClick={() => setSelectedSkill(skill)}
-                >
-                  {skill}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* City */}
-          <div className={styles.filterGroup}>
-            <label className={styles.filterLabel}>City</label>
-            <select
-              className={styles.filterSelect}
-              value={selectedCity}
-              onChange={(e) => setSelectedCity(e.target.value)}
-            >
-              <option value="All">All Cities</option>
-              {CITIES.map((city) => (
-                <option key={city} value={city}>{city}</option>
-              ))}
+            <label className={styles.filterLabel}>Skill</label>
+            <select className={styles.filterSelect} value={skill}
+              onChange={e => { setSkill(e.target.value); setPage(1) }}>
+              <option value="">All Skills</option>
+              {SKILLS_LIST.map(s => <option key={s} value={s}>{s}</option>)}
             </select>
           </div>
 
-          {/* Min Rating */}
           <div className={styles.filterGroup}>
-            <label className={styles.filterLabel}>
-              Minimum Rating: <strong>{minRating > 0 ? `${minRating}★` : 'Any'}</strong>
+            <label className={styles.filterLabel}>City</label>
+            <select className={styles.filterSelect} value={city}
+              onChange={e => { setCity(e.target.value); setPage(1) }}>
+              <option value="">All Cities</option>
+              {CITIES.map(c => <option key={c} value={c}>{c}</option>)}
+            </select>
+          </div>
+
+          <div className={styles.filterGroup}>
+            <label className={styles.filterLabel}>Availability</label>
+            <label className={styles.checkLabel}>
+              <input type="checkbox" checked={availableOnly}
+                onChange={e => { setAvailableOnly(e.target.checked); setPage(1) }} />
+              Available now only
             </label>
-            <div className={styles.ratingBtns}>
-              {[0, 4, 4.5, 4.8].map((r) => (
-                <button
-                  key={r}
-                  className={`${styles.ratingBtn} ${minRating === r ? styles.ratingActive : ''}`}
-                  onClick={() => setMinRating(r)}
-                >
-                  {r === 0 ? 'Any' : `${r}★+`}
-                </button>
-              ))}
-            </div>
           </div>
 
-          {/* Max Rate */}
           <div className={styles.filterGroup}>
-            <label className={styles.filterLabel}>
-              Max Rate: <strong>{maxRate >= 1000 ? 'Any' : `₹${maxRate}/hr`}</strong>
+            <label className={styles.filterLabel}>Verification</label>
+            <label className={styles.checkLabel}>
+              <input type="checkbox" checked={verifiedOnly}
+                onChange={e => { setVerifiedOnly(e.target.checked); setPage(1) }} />
+              Verified workers only
             </label>
-            <input
-              type="range"
-              min={100}
-              max={1000}
-              step={50}
-              value={maxRate}
-              onChange={(e) => setMaxRate(Number(e.target.value))}
-              className={styles.rangeSlider}
-            />
-            <div className={styles.rangeLabels}>
-              <span>₹100</span><span>₹1000+</span>
-            </div>
           </div>
 
-          {/* Toggles */}
-          <div className={styles.filterGroup}>
-            <label className={styles.filterLabel}>Other Filters</label>
-            <div className={styles.toggleList}>
-              <label className={styles.toggleRow}>
-                <div className={styles.toggleTrack} data-on={verifiedOnly}>
-                  <input
-                    type="checkbox"
-                    checked={verifiedOnly}
-                    onChange={(e) => setVerifiedOnly(e.target.checked)}
-                    className={styles.toggleInput}
-                  />
-                  <div className={styles.toggleThumb}></div>
-                </div>
-                <span>Verified workers only</span>
-              </label>
-
-              <label className={styles.toggleRow}>
-                <div className={styles.toggleTrack} data-on={availableOnly}>
-                  <input
-                    type="checkbox"
-                    checked={availableOnly}
-                    onChange={(e) => setAvailableOnly(e.target.checked)}
-                    className={styles.toggleInput}
-                  />
-                  <div className={styles.toggleThumb}></div>
-                </div>
-                <span>Available now</span>
-              </label>
-            </div>
-          </div>
+          <button className={styles.applyBtn} onClick={() => setSidebarOpen(false)}>
+            Apply Filters
+          </button>
         </aside>
 
-        {/* Results */}
+        {/* Mobile overlay */}
+        {sidebarOpen && (
+          <div className={styles.overlay} onClick={() => setSidebarOpen(false)} />
+        )}
+
+        {/* ── Results ── */}
         <main className={styles.results}>
           <div className={styles.resultsHeader}>
-            <p className={styles.resultsCount}>
-              <strong>{filtered.length}</strong> worker{filtered.length !== 1 ? 's' : ''} found
-              {selectedSkill !== 'All' && ` for "${selectedSkill}"`}
-              {selectedCity !== 'All' && ` in ${selectedCity}`}
+            <p className={styles.resultCount}>
+              {filtered.length === 0
+                ? 'No workers found'
+                : `Showing ${Math.min((page - 1) * PAGE_SIZE + 1, filtered.length)}–${Math.min(page * PAGE_SIZE, filtered.length)} of ${filtered.length} workers`}
+              {skill && <span className={styles.activeTag}>{skill}</span>}
+              {city && <span className={styles.activeTag}>{city}</span>}
             </p>
           </div>
 
-          {filtered.length === 0 ? (
+          {paginated.length === 0 ? (
             <div className={styles.emptyState}>
               <div className={styles.emptyIcon}>🔍</div>
               <h3>No workers found</h3>
-              <p>Try adjusting your filters or search term</p>
-              <button className={styles.resetBtn2} onClick={resetFilters}>Clear all filters</button>
+              <p>Try adjusting your filters or search terms</p>
+              <button className={styles.clearBtn2} onClick={clearFilters}>Clear Filters</button>
             </div>
           ) : (
             <div className={styles.workerGrid}>
-              {filtered.map((worker) => (
-                <WorkerCard
-                  key={worker.id}
-                  worker={worker}
-                  onClick={() => navigate(`/worker/${worker.id}`)}
-                />
+              {paginated.map(worker => (
+                <WorkerCard key={worker.id} worker={worker} onView={() => navigate(`/worker/${worker.id}`)} />
               ))}
+            </div>
+          )}
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className={styles.pagination}>
+              <button
+                className={styles.pageBtn}
+                disabled={page === 1}
+                onClick={() => setPage(p => p - 1)}
+              >← Prev</button>
+
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(p => (
+                <button
+                  key={p}
+                  className={`${styles.pageNum} ${p === page ? styles.pageActive : ''}`}
+                  onClick={() => setPage(p)}
+                >{p}</button>
+              ))}
+
+              <button
+                className={styles.pageBtn}
+                disabled={page === totalPages}
+                onClick={() => setPage(p => p + 1)}
+              >Next →</button>
             </div>
           )}
         </main>
@@ -308,69 +216,48 @@ const Search = () => {
   )
 }
 
-// ── Worker Card Component ──
-const WorkerCard = ({ worker, onClick }) => {
-  return (
-    <div className={styles.workerCard} onClick={onClick}>
-      {/* Availability dot */}
-      <div className={styles.cardTop}>
-        <div className={styles.avatarWrap}>
-          <div className={styles.avatar} style={{ background: worker.avatarGradient }}>
-            {worker.initials}
-          </div>
-          <span className={`${styles.availDot} ${worker.available ? styles.availGreen : styles.availGray}`}></span>
+const WorkerCard = ({ worker, onView }) => (
+  <div className={styles.workerCard} onClick={onView}>
+    <div className={styles.cardTop}>
+      <div className={styles.avatar} style={{ background: worker.avatarGradient }}>
+        {worker.initials}
+      </div>
+      <div className={styles.cardTopRight}>
+        <div className={styles.workerName}>{worker.name}</div>
+        <div className={styles.workerMeta}>{worker.skill} · {worker.experience}yr exp · 📍 {worker.city}</div>
+        <div className={styles.badges}>
+          {worker.verified && <span className={styles.verifiedBadge}>✓ Verified</span>}
+          {worker.badge && <span className={styles.proBadge}>{worker.badge}</span>}
+          <span className={`${styles.availBadge} ${worker.available ? styles.green : styles.gray}`}>
+            {worker.available ? '● Available' : '○ Busy'}
+          </span>
         </div>
-
-        <div className={styles.cardTopRight}>
-          <div className={styles.workerRate}>{formatCurrency(worker.hourlyRate)}<span>/hr</span></div>
-          <div className={styles.workerDistance}>📍 {worker.distance}</div>
-        </div>
       </div>
-
-      <div className={styles.workerName}>{worker.name}</div>
-      <div className={styles.workerMeta}>
-        <span className={styles.workerSkill}>{worker.skill}</span>
-        <span className={styles.dot}>·</span>
-        <span>{worker.experience} yrs exp</span>
-        <span className={styles.dot}>·</span>
-        <span>{worker.city}</span>
-      </div>
-
-      <div className={styles.ratingRow}>
-        <span className={styles.stars}>{'★'.repeat(Math.floor(worker.rating))}{'☆'.repeat(5 - Math.floor(worker.rating))}</span>
-        <span className={styles.ratingVal}>{worker.rating}</span>
-        <span className={styles.reviewCount}>({worker.totalReviews} reviews)</span>
-      </div>
-
-      <div className={styles.badges}>
-        {worker.verified && (
-          <span className={styles.verifiedBadge}>✓ Verified</span>
-        )}
-        {worker.badge && (
-          <span className={styles.proBadge}>{worker.badge}</span>
-        )}
-        {!worker.available && (
-          <span className={styles.unavailBadge}>Unavailable</span>
-        )}
-      </div>
-
-      <div className={styles.skillTags}>
-        {worker.skills.slice(0, 3).map((s) => (
-          <span key={s} className={styles.skillTag}>{s}</span>
-        ))}
-        {worker.skills.length > 3 && (
-          <span className={styles.skillTagMore}>+{worker.skills.length - 3}</span>
-        )}
-      </div>
-
-      <div className={styles.cardFooter}>
-        <div className={styles.responseTime}>⚡ Responds {worker.responseTime}</div>
-        <button className={styles.bookBtn} onClick={(e) => { e.stopPropagation(); onClick() }}>
-          Book Now
-        </button>
+      <div className={styles.rateBox}>
+        <div className={styles.rateVal}>{formatCurrency(worker.hourlyRate)}</div>
+        <div className={styles.rateLabel}>/hr</div>
       </div>
     </div>
-  )
-}
+
+    <div className={styles.skillTags}>
+      {worker.skills.slice(0, 4).map(s => (
+        <span key={s} className={styles.skillTag}>{s}</span>
+      ))}
+    </div>
+
+    <div className={styles.cardBottom}>
+      <div className={styles.ratingRow}>
+        <span className={styles.stars}>{'★'.repeat(Math.floor(worker.rating))}</span>
+        <span className={styles.ratingVal}>{worker.rating}</span>
+        <span className={styles.reviewCount}>({worker.totalReviews} reviews)</span>
+        <span className={styles.sep}>·</span>
+        <span className={styles.jobsDone}>{worker.jobsDone} jobs done</span>
+      </div>
+      <button className={styles.viewBtn} onClick={e => { e.stopPropagation(); onView() }}>
+        View Profile →
+      </button>
+    </div>
+  </div>
+)
 
 export default Search
