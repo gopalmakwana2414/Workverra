@@ -1,40 +1,29 @@
-import mongoose from "mongoose";
+const mongoose = require('mongoose')
 
 const bookingSchema = new mongoose.Schema(
   {
     employer: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: true,
     },
     worker: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: true,
     },
-    skill: {
-      type: String,
-      required: true,
-    },
-    date: {
-      type: Date,
-      required: true,
-    },
-    location: {
-      type: String,
-      required: true,
-    },
-    amount: {
-      type: Number,
-      required: true,
-    },
+    date: String,
+    time: String,
+    address: String,
+    amount: Number,
     status: {
       type: String,
-      enum: ["pending", "accepted", "rejected", "completed"],
-      default: "pending",
+      enum: ['pending', 'accepted', 'rejected', 'completed'],
+      default: 'pending',
     },
   },
   { timestamps: true }
-);
+)
 
-export default mongoose.model("Booking", bookingSchema);
+// ✅ THIS IS IMPORTANT
+module.exports = mongoose.model('Booking', bookingSchema)
