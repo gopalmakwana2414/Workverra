@@ -82,3 +82,35 @@
 /* Responsive */
 @media (max-width:900px) { .page { grid-template-columns:1fr; } .left { display:none; } .right { padding:32px 20px; } }
 @media (max-width:480px) { .roleGrid { grid-template-columns:1fr; } .fieldRow { grid-template-columns:1fr; } }
+
+/* Additional fixes */
+.row2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.roleCards { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px; }
+.roleCard { background:#fff; border:2px solid #e5e7eb; border-radius:16px; padding:24px; cursor:pointer; text-align:center; transition:all .2s; position:relative; }
+.roleCard:hover { border-color:#bfdbfe; }
+.roleCardActive { border-color:#1A56DB; background:#eff6ff; }
+.roleCardIcon { font-size:2rem; display:block; margin-bottom:10px; }
+.roleCardTitle { font-weight:700; color:#111827; font-size:.95rem; margin-bottom:4px; }
+.roleCardDesc { font-size:.8rem; color:#6b7280; }
+.roleCardCheck { position:absolute; top:10px; right:10px; width:22px; height:22px; background:#1A56DB; border-radius:50%; color:#fff; font-size:.75rem; display:flex; align-items:center; justify-content:center; font-weight:700; }
+.skillsGrid { display:flex; flex-wrap:wrap; gap:8px; }
+.skillChip { padding:7px 14px; border:1.5px solid #e5e7eb; border-radius:8px; background:#fff; cursor:pointer; font-size:.825rem; font-weight:500; color:#374151; transition:all .15s; display:flex; align-items:center; gap:5px; }
+.skillChip:hover { border-color:#1A56DB; color:#1A56DB; }
+.skillActive { background:#1A56DB; border-color:#1A56DB; color:#fff; }
+.skillCheck { font-size:.7rem; }
+@media(max-width:600px) { .row2 { grid-template-columns:1fr; } .roleCards { grid-template-columns:1fr; } }
+/* Step card styles for new Register */
+.stepCard { }
+.stepTitle { font-family:'Sora',sans-serif; font-size:1.3rem; font-weight:700; color:#111827; margin-bottom:6px; }
+.stepSub { color:#6b7280; font-size:.875rem; margin-bottom:24px; }
+.navRow { display:flex; gap:12px; margin-top:8px; }
+.nextBtn { flex:1; padding:13px; background:#1A56DB; color:#fff; border:none; border-radius:10px; font-size:.95rem; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background .2s; }
+.nextBtn:hover:not(:disabled) { background:#1344B8; }
+.nextBtn:disabled { opacity:.7; cursor:not-allowed; }
+.phoneWrap { display:flex; align-items:center; border:1.5px solid #e5e7eb; border-radius:10px; overflow:hidden; background:#fff; }
+.phoneWrap:focus-within { border-color:#1A56DB; }
+.phoneCode { padding:10px 14px; font-size:.9rem; font-weight:600; color:#374151; background:#f9fafb; border-right:1.5px solid #e5e7eb; white-space:nowrap; }
+.phoneInner { flex:1; padding:10px 14px; border:none; outline:none; font-size:.9rem; font-family:'DM Sans',sans-serif; color:#1F2937; background:transparent; }
+.loginNote { text-align:center; font-size:.825rem; color:#6b7280; margin-top:16px; }
+.loginLink { color:#1A56DB; font-weight:600; }
+.loginLink:hover { text-decoration:underline; }

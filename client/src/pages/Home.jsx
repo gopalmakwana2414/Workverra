@@ -7,19 +7,17 @@ import Stats from '../components/Stats/Stats'
 import Testimonials from '../components/Testimonials/Testimonials'
 import CTA from '../components/CTA/CTA'
 
-const Home = () => {
-  return (
-    <main>
-      <Hero />
-      <LogosStrip />
-      <HowItWorks />
-      <Features />
-      <WorkerCards />
-      <Stats />
-      <Testimonials />
-      <CTA />
-    </main>
-  )
-}
+const Home = () => (
+  <main>
+    <Hero />
+    <LogosStrip />
+    <HowItWorks />
+    <Features />
+    <WorkerCards />
+    <Stats />
+    <Testimonials />
+    <CTA />
+  </main>
+)
 
 export default Home

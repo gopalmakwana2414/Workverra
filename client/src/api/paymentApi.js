@@ -1,31 +1,15 @@
 import axios from 'axios'
 
-const API = 'http://localhost:5000/api'
+const API = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
 
-// Create order
+const authHeaders = (token) => ({ headers: { Authorization: `Bearer ${token}` } })
+
 export const createOrder = async (bookingId, token) => {
-  const res = await axios.post(
-    `${API}/payments/create-order`,
-    { bookingId },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  )
+  const res = await axios.post(`${API}/payments/create-order`, { bookingId }, authHeaders(token))
   return res.data
 }
 
-// Verify payment
 export const verifyPayment = async (data, token) => {
-  const res = await axios.post(
-    `${API}/payments/verify-payment`,
-    data,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  )
+  const res = await axios.post(`${API}/payments/verify-payment`, data, authHeaders(token))
   return res.data
 }

@@ -1,67 +1,79 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Navbar from './components/Navbar/Navbar'
-import Footer from './components/Footer/Footer'
-import Home from './pages/Home'
-import Login from './pages/Login/Login'
-import Register from './pages/Register/Register'
-import Search from './pages/Search/Search'
-import WorkerProfile from './pages/WorkerProfile/WorkerProfile'
-import WorkerDashboard from './pages/WorkerDashboard/WorkerDashboard'
-import EmployerDashboard from './pages/EmployerDashboard/EmployerDashboard'
-import './styles/globals.css'
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { AuthProvider, useAuth } from "./context/AuthContext";
+import Navbar from "./components/Navbar/Navbar";
+import Footer from "./components/Footer/Footer";
 
-// Pages without Navbar/Footer (full-screen layouts)
-const AuthLayout = ({ children }) => <>{children}</>
+import Home from "./pages/Home";
+import Login from "./pages/Login/Login";
+import Register from "./pages/Register/Register";
+import EmployerDashboard from "./pages/EmployerDashboard/EmployerDashboard";
+import WorkerDashboard from "./pages/WorkerDashboard/WorkerDashboard";
+import WorkerProfile from "./pages/WorkerProfile/WorkerProfile";
+import Search from "./pages/Search/Search";
+import BookingPage from "./pages/Booking/BookingPage";
+import PaymentPage from "./pages/Payment/PaymentPage";
 
-// Pages with Navbar/Footer
-const MainLayout = ({ children }) => (
-  <>
-    <Navbar />
-    {children}
-    <Footer />
-  </>
-)
+const Protected = ({ children, role }) => {
+  const { isAuthenticated, user, loading } = useAuth();
+  if (loading) return (
+    <div style={{ display:'flex', alignItems:'center', justifyContent:'center',
+      height:'100vh', fontFamily:"'Sora',sans-serif", color:'#1A56DB',
+      fontSize:'1.1rem', gap:'12px' }}>
+      <div style={{ width:24, height:24, border:'3px solid #dbeafe',
+        borderTopColor:'#1A56DB', borderRadius:'50%',
+        animation:'spin 0.8s linear infinite' }} />
+      Loading…
+    </div>
+  );
+  if (!isAuthenticated) return <Navigate to="/login" replace />;
+  if (role && user?.role !== role) return <Navigate to="/" replace />;
+  return children;
+};
 
-// Dashboard layout (no footer, has its own sidebar)
-const DashLayout = ({ children }) => (
-  <>
-    <Navbar />
-    {children}
-  </>
-)
+// Pages that should NOT show Navbar/Footer
+const NO_LAYOUT_PATHS = ['/login', '/register'];
 
-const Placeholder = ({ title }) => (
-  <div style={{ padding:'120px 5%', textAlign:'center', fontFamily:'Sora, sans-serif' }}>
-    <h1 style={{ fontSize:32, marginBottom:12 }}>{title}</h1>
-    <p style={{ color:'#4B5563' }}>Coming soon!</p>
-  </div>
-)
+const Layout = ({ children }) => {
+  const location = useLocation();
+  const hideLayout = NO_LAYOUT_PATHS.some(p => location.pathname.startsWith(p));
+  return (
+    <>
+      {!hideLayout && <Navbar />}
+      {children}
+      {!hideLayout && <Footer />}
+    </>
+  );
+};
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        {/* Main site pages */}
-        <Route path="/" element={<MainLayout><Home /></MainLayout>} />
-        <Route path="/search" element={<MainLayout><Search /></MainLayout>} />
-        <Route path="/worker/:id" element={<MainLayout><WorkerProfile /></MainLayout>} />
-
-        {/* Auth pages — full screen, no nav/footer */}
-        <Route path="/login" element={<AuthLayout><Login /></AuthLayout>} />
-        <Route path="/register" element={<AuthLayout><Register /></AuthLayout>} />
-
-        {/* Dashboard pages — nav only, no footer */}
-        <Route path="/dashboard/worker" element={<DashLayout><WorkerDashboard /></DashLayout>} />
-        <Route path="/dashboard/employer" element={<DashLayout><EmployerDashboard /></DashLayout>} />
-
-        {/* Admin — placeholder for now */}
-        <Route path="/admin" element={<DashLayout><Placeholder title="Admin Panel — Coming Soon" /></DashLayout>} />
-
-        {/* 404 */}
-        <Route path="*" element={<MainLayout><Placeholder title="404 — Page Not Found" /></MainLayout>} />
-      </Routes>
-    </Router>
-  )
+    <AuthProvider>
+      <Router>
+        <Layout>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/search" element={<Search />} />
+            <Route path="/worker/:id" element={<WorkerProfile />} />
+            <Route path="/dashboard/employer" element={
+              <Protected role="employer"><EmployerDashboard /></Protected>
+            } />
+            <Route path="/dashboard/worker" element={
+              <Protected role="worker"><WorkerDashboard /></Protected>
+            } />
+            <Route path="/booking/:workerId" element={
+              <Protected><BookingPage /></Protected>
+            } />
+            <Route path="/payment/:bookingId" element={
+              <Protected><PaymentPage /></Protected>
+            } />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </Layout>
+      </Router>
+    </AuthProvider>
+  );
 }
 
-export default App
+export default App;
