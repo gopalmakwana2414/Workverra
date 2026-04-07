@@ -31,7 +31,7 @@ const Register = () => {
 
   const set = (key, val) => {
     setForm((f) => ({ ...f, [key]: val }))
-    setErrors((e) => ({ ...e, [key]: '' }))
+    setErrors((e) => ({ ...e, [key]: '', submit: '' }))
   }
 
   const toggleSkill = (skill) => {
@@ -46,17 +46,17 @@ const Register = () => {
   const validate = () => {
     const e = {}
     if (step === 1) {
-      if (!form.name.trim())  e.name  = 'Full name is required'
+      if (!form.name.trim())          e.name  = 'Full name is required'
       if (!/^\d{10}$/.test(form.phone)) e.phone = 'Enter valid 10-digit number'
-      if (!form.city)         e.city  = 'Select your city'
+      if (!form.city)                  e.city  = 'Select your city'
     }
     if (step === 2 && role === 'employer') {
       if (!form.companyName.trim()) e.companyName = 'Company / business name required'
     }
     if (step === 2 && role === 'worker') {
-      if (!form.skill)         e.skill      = 'Select your primary skill'
-      if (!form.experience)    e.experience = 'Enter years of experience'
-      if (!form.hourlyRate)    e.hourlyRate = 'Enter your hourly rate'
+      if (!form.skill)       e.skill      = 'Select your primary skill'
+      if (!form.experience)  e.experience = 'Enter years of experience'
+      if (!form.hourlyRate)  e.hourlyRate = 'Enter your hourly rate'
     }
     setErrors(e)
     return Object.keys(e).length === 0
@@ -87,10 +87,10 @@ const Register = () => {
         login(res.data)
         navigate(role === 'worker' ? '/dashboard/worker' : '/dashboard/employer')
       } catch (err) {
-  const msg = err.response?.data?.message || 'Registration failed. Please try again.'
-  setErrors({ submit: msg })
-}
-setLoading(false)
+        const msg = err.response?.data?.message || 'Registration failed. Please try again.'
+        setErrors({ submit: msg })
+      }
+      setLoading(false)
     } else {
       setStep(s => s + 1)
     }
@@ -109,8 +109,8 @@ setLoading(false)
           </h2>
           <p className={styles.leftSub}>
             {role === 'worker'
-              ? 'Join 2,400+ verified workers across India. Get bookings, secure payments, and grow your reputation.'
-              : 'Access 2,400+ skilled workers in your city. Post jobs, manage bookings, and pay securely via UPI.'}
+              ? 'Join thousands of verified workers across India. Get bookings, secure payments, and grow your reputation.'
+              : 'Access skilled workers in your city. Post jobs, manage bookings, and pay securely via UPI.'}
           </p>
           <div className={styles.stepList}>
             {steps.map((s, i) => (
@@ -130,10 +130,17 @@ setLoading(false)
             <div className={styles.progressFill} style={{ width: `${progress}%` }} />
           </div>
 
+          {/* Global submit error */}
+          {errors.submit && (
+            <div className={styles.submitError}>
+              ⚠ {errors.submit}
+            </div>
+          )}
+
           {/* Step 0: Role */}
           {step === 0 && (
             <div className={styles.stepCard}>
-              <h2 className={styles.stepTitle}>How will you use SkillBridge?</h2>
+              <h2 className={styles.stepTitle}>How will you use Workverra?</h2>
               <p className={styles.stepSub}>Choose your role to get started</p>
               <div className={styles.roleCards}>
                 {[
@@ -202,7 +209,9 @@ setLoading(false)
                 <label className={styles.label}>Business Type (optional)</label>
                 <select className={styles.input} value={form.companyType} onChange={e => set('companyType', e.target.value)}>
                   <option value="">Select type</option>
-                  {['Individual / Freelancer','Small Business','Construction','Real Estate','Restaurant / Hotel','Manufacturing','Healthcare','Retail','Other'].map(t=><option key={t}>{t}</option>)}
+                  {['Individual / Freelancer','Small Business','Construction','Real Estate',
+                    'Restaurant / Hotel','Manufacturing','Healthcare','Retail','Other']
+                    .map(t=><option key={t}>{t}</option>)}
                 </select>
               </div>
             </div>

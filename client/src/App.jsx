@@ -12,16 +12,23 @@ import WorkerProfile from "./pages/WorkerProfile/WorkerProfile";
 import Search from "./pages/Search/Search";
 import BookingPage from "./pages/Booking/BookingPage";
 import PaymentPage from "./pages/Payment/PaymentPage";
+import ChatPage from "./pages/Chat/ChatPage";
+import SubscriptionPage from "./pages/Subscription/SubscriptionPage";
+import PolicyPage from "./pages/Policy/PolicyPage";
 
 const Protected = ({ children, role }) => {
   const { isAuthenticated, user, loading } = useAuth();
   if (loading) return (
-    <div style={{ display:'flex', alignItems:'center', justifyContent:'center',
+    <div style={{
+      display:'flex', alignItems:'center', justifyContent:'center',
       height:'100vh', fontFamily:"'Sora',sans-serif", color:'#1A56DB',
-      fontSize:'1.1rem', gap:'12px' }}>
-      <div style={{ width:24, height:24, border:'3px solid #dbeafe',
+      fontSize:'1.1rem', gap:'12px'
+    }}>
+      <div style={{
+        width:24, height:24, border:'3px solid #dbeafe',
         borderTopColor:'#1A56DB', borderRadius:'50%',
-        animation:'spin 0.8s linear infinite' }} />
+        animation:'spin 0.8s linear infinite'
+      }} />
       Loading…
     </div>
   );
@@ -30,7 +37,6 @@ const Protected = ({ children, role }) => {
   return children;
 };
 
-// Pages that should NOT show Navbar/Footer
 const NO_LAYOUT_PATHS = ['/login', '/register'];
 
 const Layout = ({ children }) => {
@@ -56,6 +62,8 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/search" element={<Search />} />
             <Route path="/worker/:id" element={<WorkerProfile />} />
+            <Route path="/subscription" element={<SubscriptionPage />} />
+            <Route path="/policy" element={<PolicyPage />} />
             <Route path="/dashboard/employer" element={
               <Protected role="employer"><EmployerDashboard /></Protected>
             } />
@@ -67,6 +75,12 @@ function App() {
             } />
             <Route path="/payment/:bookingId" element={
               <Protected><PaymentPage /></Protected>
+            } />
+            <Route path="/chat" element={
+              <Protected><ChatPage /></Protected>
+            } />
+            <Route path="/chat/:userId" element={
+              <Protected><ChatPage /></Protected>
             } />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

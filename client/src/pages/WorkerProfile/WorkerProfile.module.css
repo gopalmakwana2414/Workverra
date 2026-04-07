@@ -68,3 +68,6 @@
 .confirmBtn:hover:not(:disabled) { background:#1344B8; }
 .confirmBtn:disabled { background:#9ca3af; cursor:not-allowed; }
 @media(max-width:768px) { .bodyGrid { grid-template-columns:1fr; } .headerCard { flex-direction:column; align-items:center; text-align:center; } .headerRate { text-align:center; } .bookRow { grid-template-columns:1fr; } }
+
+.chatBtn { width:100%; padding:11px; background:#fff; color:#1A56DB; border:1.5px solid #1A56DB; border-radius:10px; font-size:.9rem; font-weight:600; cursor:pointer; margin-top:10px; transition:all .2s; }
+.chatBtn:hover { background:#eff6ff; }

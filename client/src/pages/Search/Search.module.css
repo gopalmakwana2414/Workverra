@@ -65,3 +65,13 @@
   .sidebar { width:100%; }
   .grid { grid-template-columns:1fr; }
 }
+
+/* Mobile sidebar toggle */
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+  .sidebarOpen {
+    display: block;
+  }
+}
