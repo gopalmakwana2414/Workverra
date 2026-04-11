@@ -45,7 +45,6 @@ const WorkerProfile = () => {
   tomorrow.setDate(tomorrow.getDate() + 1)
   const minDate = tomorrow.toISOString().split('T')[0]
 
-  // ── Fetch worker from real API ───────────────────────────
   useEffect(() => {
     const fetchWorker = async () => {
       setLoadingWorker(true)
@@ -93,6 +92,7 @@ const WorkerProfile = () => {
   const avgRating   = worker.avgRating ?? worker.rating ?? 0
   const reviewCount = worker.reviewCount ?? worker.totalReviews ?? reviewList.length
   const rate        = worker.hourlyRate ?? 0
+  const dayRate     = rate * 8   // ₹/day = hourly × 8
   const jobs        = worker.jobsDone ?? worker.completedJobs ?? 0
   const exp         = worker.experience ?? 0
   const available   = worker.isAvailable ?? worker.available ?? true
@@ -167,12 +167,13 @@ const WorkerProfile = () => {
       <div className={styles.container}>
         <button className={styles.backBtn} onClick={() => navigate(-1)}>← Back to search</button>
 
-        {/* Profile Header */}
+        {/* ── Profile Header ── */}
         <div className={styles.headerCard}>
           <div className={styles.avatar}
             style={{ background: 'linear-gradient(135deg,#667eea,#764ba2)' }}>
             {initials}
           </div>
+
           <div className={styles.headerInfo}>
             <div className={styles.nameRow}>
               <h1 className={styles.workerName}>{worker.name}</h1>
@@ -193,12 +194,20 @@ const WorkerProfile = () => {
               {jobs > 0 && <span>{jobs} jobs done</span>}
             </div>
           </div>
+
+          {/* Rate block — shows both /hr and /day */}
           <div className={styles.headerRate}>
             {rate > 0 && (
-              <>
-                <div className={styles.rateVal}>{formatCurrency(rate)}</div>
-                <div className={styles.rateLabel}>per hour</div>
-              </>
+              <div className={styles.rateBlock}>
+                <div className={styles.rateRow}>
+                  <span className={styles.rateVal}>{formatCurrency(rate)}</span>
+                  <span className={styles.rateUnit}>/hr</span>
+                </div>
+                <div className={styles.rateDayRow}>
+                  <span className={styles.rateDayVal}>{formatCurrency(dayRate)}</span>
+                  <span className={styles.rateDayUnit}>/day (8h)</span>
+                </div>
+              </div>
             )}
             <div className={`${styles.availPill} ${available ? styles.availOn : styles.availOff}`}>
               {available ? '● Available' : '○ Busy'}
@@ -206,6 +215,7 @@ const WorkerProfile = () => {
           </div>
         </div>
 
+        {/* ── Body ── */}
         <div className={styles.bodyGrid}>
           {/* Left col */}
           <div className={styles.leftCol}>
@@ -253,7 +263,9 @@ const WorkerProfile = () => {
                       </div>
                     </div>
                     <span className={styles.reviewDate}>
-                      {r.createdAt ? new Date(r.createdAt).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' }) : r.date || ''}
+                      {r.createdAt
+                        ? new Date(r.createdAt).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' })
+                        : r.date || ''}
                     </span>
                   </div>
                   <p className={styles.reviewComment}>{r.comment}</p>
@@ -262,15 +274,24 @@ const WorkerProfile = () => {
             </div>
           </div>
 
-          {/* Right col — sticky booking card */}
+          {/* ── Right col — sticky booking card ── */}
           <div className={styles.rightCol}>
             <div className={styles.stickyCard}>
               {rate > 0 && (
-                <div className={styles.priceRow}>
-                  <span className={styles.price}>{formatCurrency(rate)}</span>
-                  <span className={styles.perHr}>/hr</span>
-                </div>
+                <>
+                  {/* Hourly rate */}
+                  <div className={styles.priceRow}>
+                    <span className={styles.price}>{formatCurrency(rate)}</span>
+                    <span className={styles.perHr}>/hr</span>
+                  </div>
+                  {/* Daily rate — NEW */}
+                  <div className={styles.dayPriceRow}>
+                    <span className={styles.dayPrice}>{formatCurrency(dayRate)}</span>
+                    <span className={styles.perDay}>/day (8 hrs)</span>
+                  </div>
+                </>
               )}
+
               <div className={styles.metaList}>
                 {worker.responseTime && (
                   <div className={styles.metaItem}><span>⏱</span><span>Responds {worker.responseTime}</span></div>
@@ -281,10 +302,11 @@ const WorkerProfile = () => {
                 {worker.joinedDate && (
                   <div className={styles.metaItem}><span>📅</span><span>Member since {worker.joinedDate}</span></div>
                 )}
-                {worker.pinCode && (
-                  <div className={styles.metaItem}><span>📍</span><span>PIN: {worker.pinCode}</span></div>
+                {worker.city && (
+                  <div className={styles.metaItem}><span>📍</span><span>{worker.city}</span></div>
                 )}
               </div>
+
               <button
                 className={styles.bookBtn}
                 disabled={!available}
@@ -292,6 +314,7 @@ const WorkerProfile = () => {
               >
                 {available ? '📋 Book Now' : '○ Currently Unavailable'}
               </button>
+
               {isAuthenticated && (
                 <button
                   className={styles.chatBtn}
@@ -310,7 +333,7 @@ const WorkerProfile = () => {
         </div>
       </div>
 
-      {/* Booking Modal */}
+      {/* ── Booking Modal ── */}
       {bookingOpen && (
         <div className={styles.overlay} onClick={() => !bookingLoading && setBookingOpen(false)}>
           <div className={styles.modal} onClick={e => e.stopPropagation()}>
@@ -349,6 +372,7 @@ const WorkerProfile = () => {
                       </select>
                     </div>
                   </div>
+
                   <div className={styles.bookField}>
                     <label>Duration</label>
                     <div style={{ display:'flex', gap:8, flexWrap:'wrap' }}>
@@ -365,6 +389,7 @@ const WorkerProfile = () => {
                       ))}
                     </div>
                   </div>
+
                   <div className={styles.bookField}>
                     <label>Work Description *</label>
                     <textarea rows={3} placeholder="Describe what needs to be done..."
@@ -373,6 +398,7 @@ const WorkerProfile = () => {
                       className={errors.description ? styles.inputErr : ''} />
                     {errors.description && <span className={styles.errTxt}>{errors.description}</span>}
                   </div>
+
                   <div className={styles.bookField}>
                     <label>Your Address *</label>
                     <input placeholder="Full address for the work"
@@ -381,6 +407,7 @@ const WorkerProfile = () => {
                       className={errors.address ? styles.inputErr : ''} />
                     {errors.address && <span className={styles.errTxt}>{errors.address}</span>}
                   </div>
+
                   {rate > 0 && (
                     <div className={styles.bookSummary}>
                       <span>Estimated: {formatCurrency(estimatedTotal)}</span>
@@ -389,6 +416,7 @@ const WorkerProfile = () => {
                       </span>
                     </div>
                   )}
+
                   <button type="submit" className={styles.confirmBtn} disabled={bookingLoading}>
                     {bookingLoading ? 'Sending…' : 'Confirm Request'}
                   </button>
@@ -399,7 +427,7 @@ const WorkerProfile = () => {
         </div>
       )}
 
-      {/* Review Modal */}
+      {/* ── Review Modal ── */}
       {reviewOpen && (
         <div className={styles.overlay} onClick={() => setReviewOpen(false)}>
           <div className={styles.modal} onClick={e => e.stopPropagation()} style={{ maxWidth:440 }}>

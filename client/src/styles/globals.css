@@ -4,14 +4,14 @@
 
 :root {
   /* Brand colors */
-  --brand-blue: #1A56DB;
-  --brand-blue-dark: #1344B8;
+  --brand-blue:       #1A56DB;
+  --brand-blue-dark:  #1344B8;
   --brand-blue-light: #EBF2FF;
-  --brand-indigo: #4338CA;
-  --brand-accent: #F59E0B;
+  --brand-indigo:     #4338CA;
+  --brand-accent:     #F59E0B;
 
   /* Neutral */
-  --gray-50: #F9FAFB;
+  --gray-50:  #F9FAFB;
   --gray-100: #F3F4F6;
   --gray-200: #E5E7EB;
   --gray-300: #D1D5DB;
@@ -23,90 +23,74 @@
   --gray-900: #111827;
 
   /* Semantic */
-  --success: #059669;
-  --success-bg: #D1FAE5;
-  --warning: #D97706;
-  --warning-bg: #FEF3C7;
-  --error: #DC2626;
-  --error-bg: #FEF2F2;
+  --success:       #059669;
+  --success-bg:    #D1FAE5;
+  --success-light: #D1FAE5;
+  --warning:       #D97706;
+  --warning-bg:    #FEF3C7;
+  --error:         #DC2626;
+  --error-bg:      #FEF2F2;
 
-  /* Spacing */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
+  /* Radii */
+  --radius-sm:   8px;
+  --radius-md:   12px;
+  --radius-lg:   16px;
+  --radius-xl:   24px;
   --radius-full: 999px;
 
   /* Shadows */
-  --shadow-sm: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.06),  0 1px 2px rgba(0,0,0,.04);
   --shadow-md: 0 4px 16px rgba(0,0,0,.08), 0 2px 4px rgba(0,0,0,.04);
-  --shadow-lg: 0 12px 40px rgba(0,0,0,.10), 0 4px 12px rgba(0,0,0,.05);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,.10),0 4px 12px rgba(0,0,0,.05);
   --shadow-xl: 0 24px 60px rgba(0,0,0,.12);
 
-  /* Navbar height */
-  --nav-h: 72px;
+  /* Nav height — used by sticky headers */
+  --nav-h: 70px;
 
-  /* Legacy aliases used by EmployerDashboard */
-  --white: #ffffff;
-  --surface: #F9FAFB;
-  --border: #E5E7EB;
-  --brand: #1A56DB;
-  --brand-dark: #1344B8;
-  --brand-light: #EBF2FF;
-  --text-primary: #1F2937;
+  /* Legacy aliases (used by Login, Register, dashboards) */
+  --white:          #ffffff;
+  --surface:        #F9FAFB;
+  --border:         #E5E7EB;
+  --brand:          #1A56DB;
+  --brand-dark:     #1344B8;
+  --brand-light:    #EBF2FF;
+  --text-primary:   #1F2937;
   --text-secondary: #6B7280;
-  --text-muted: #9CA3AF;
-  --accent: #F59E0B;
-  --accent-light: #FEF3C7;
-  --success-light: #D1FAE5;
-  --font-head: 'Sora', sans-serif;
-  --font-body: 'DM Sans', sans-serif;
+  --text-muted:     #9CA3AF;
+  --accent:         #F59E0B;
+  --accent-light:   #FEF3C7;
+  --font-head:      'Sora',    sans-serif;
+  --font-body:      'DM Sans', sans-serif;
 }
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior:smooth; }
 
 body {
-  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  color: var(--gray-800);
-  background: #fff;
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
+  font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;
+  color:var(--gray-800);
+  background:#fff;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Sora', sans-serif;
-  line-height: 1.25;
-  font-weight: 700;
-}
+h1,h2,h3,h4,h5,h6 { font-family:'Sora',sans-serif; line-height:1.25; font-weight:700; }
 
-a { color: inherit; text-decoration: none; }
-button { font-family: inherit; cursor: pointer; border: none; background: none; }
-input, select, textarea { font-family: inherit; }
-img { max-width: 100%; display: block; }
-ul { list-style: none; }
+a { color:inherit; text-decoration:none; }
+button { font-family:inherit; cursor:pointer; border:none; background:none; }
+input,select,textarea { font-family:inherit; }
+img { max-width:100%; display:block; }
+ul { list-style:none; }
 
-/* Scrollbar */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--gray-300); border-radius: 3px; }
+::-webkit-scrollbar { width:6px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:var(--gray-300); border-radius:3px; }
 
-/* Focus ring */
-*:focus-visible {
-  outline: 2px solid var(--brand-blue);
-  outline-offset: 2px;
-}
+*:focus-visible { outline:2px solid var(--brand-blue); outline-offset:2px; }
 
-/* Page padding-top so content clears fixed navbar */
-.page-top { padding-top: var(--nav-h); }
+.page-top { padding-top:var(--nav-h); }
 
-/* ──  keyframes ── */
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-@keyframes shimmer {
-  0%   { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
+@keyframes spin    { to { transform:rotate(360deg); } }
+@keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+@keyframes fadeUp  { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }

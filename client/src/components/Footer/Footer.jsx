@@ -3,20 +3,21 @@ import styles from './Footer.module.css'
 
 const footerLinks = {
   Platform: [
-    { label: 'How it Works', to: '/#how-it-works' },
-    { label: 'Browse Workers', to: '/search' },
-    { label: 'Post a Job', to: '/register' },
-    { label: 'Pricing', to: '/subscription' },
+    { label: 'How it Works',  to: '/how-it-works' }, // FIX #8: dedicated page route
+    { label: 'Browse Workers',to: '/search' },
+    { label: 'Post a Job',    to: '/register?role=employer' }, // FIX #1
+    { label: 'Pricing',       to: '/subscription' },
   ],
   Company: [
-    { label: 'About', to: '/about' },
-    { label: 'Blog', to: '/blog' },
-    { label: 'Careers', to: '/careers' },
+    { label: 'About',    to: '/about' },
+    { label: 'Blog',     to: '/blog' },
+    { label: 'Careers',  to: '/careers' },
   ],
   Support: [
     { label: 'Help Center', to: '/help' },
-    { label: 'Contact', to: '/contact' },
-    { label: 'Policy', to: '/policy' },
+    { label: 'Contact',     to: '/contact' },
+    { label: 'FAQ',         to: '/faq' },
+    { label: 'Policy',      to: '/policy' },
   ],
 }
 
@@ -27,6 +28,11 @@ const Footer = () => (
         <div className={styles.footerLogo}>Workverra</div>
         <p className={styles.footerTagline}>Hyperlocal talent marketplace for Tier 2 &amp; 3 India.</p>
         <p className={styles.footerDesc}>Connecting skilled workers with employers across 200+ cities.</p>
+        <div className={styles.footerContact}>
+          <a href="tel:+918959465264"                 className={styles.contactItem}>📞 +91 8959465264</a>
+          {/* FIX #6: correct email */}
+          <a href="mailto:team.workverra@gmail.com"   className={styles.contactItem}>✉ team.workverra@gmail.com</a>
+        </div>
       </div>
       <div className={styles.footerLinks}>
         {Object.entries(footerLinks).map(([group, links]) => (
@@ -44,7 +50,7 @@ const Footer = () => (
         <span>© 2026 Workverra Technologies Pvt. Ltd. All Rights Reserved.</span>
       </div>
       <div className={styles.footerCredit}>
-        Developed by <strong>Gopal Makwana</strong> © 2026 All Rights Reserved
+        Developed by <strong>Gopal Makwana</strong>
       </div>
       <div className={styles.footerLegal}>
         <Link to="/policy">Privacy Policy</Link>

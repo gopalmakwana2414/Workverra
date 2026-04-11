@@ -1,5 +1,15 @@
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styles from './Hero.module.css'
+
+const TYPEWRITER_WORDS = [
+  'Electricians',
+  'Plumbers',
+  'Carpenters',
+  'Painters',
+  'AC Technicians',
+  'Welders',
+]
 
 const workerData = {
   initials: 'RS',
@@ -16,6 +26,35 @@ const avatarColors = ['#667eea', '#f093fb', '#4facfe', '#43e97b']
 
 const Hero = () => {
   const navigate = useNavigate()
+  const [wordIndex, setWordIndex] = useState(0)
+  const [displayed, setDisplayed] = useState('')
+  const [isDeleting, setIsDeleting] = useState(false)
+  const [charIndex, setCharIndex] = useState(0)
+
+  // Typewriter effect
+  useEffect(() => {
+    const currentWord = TYPEWRITER_WORDS[wordIndex]
+    let timeout
+
+    if (!isDeleting && charIndex < currentWord.length) {
+      timeout = setTimeout(() => {
+        setDisplayed(currentWord.slice(0, charIndex + 1))
+        setCharIndex(c => c + 1)
+      }, 80)
+    } else if (!isDeleting && charIndex === currentWord.length) {
+      timeout = setTimeout(() => setIsDeleting(true), 1800)
+    } else if (isDeleting && charIndex > 0) {
+      timeout = setTimeout(() => {
+        setDisplayed(currentWord.slice(0, charIndex - 1))
+        setCharIndex(c => c - 1)
+      }, 45)
+    } else if (isDeleting && charIndex === 0) {
+      setIsDeleting(false)
+      setWordIndex(i => (i + 1) % TYPEWRITER_WORDS.length)
+    }
+
+    return () => clearTimeout(timeout)
+  }, [charIndex, isDeleting, wordIndex])
 
   return (
     <section className={styles.hero}>
@@ -29,20 +68,37 @@ const Hero = () => {
           </div>
 
           <h1 className={styles.heroTitle}>
-            Hire <span className={styles.highlight}>Verified</span> Local Talent. Instantly.
+            India's Fastest Way to Hire{' '}
+            <span className={styles.typewriterWrap}>
+              <span className={styles.highlight}>{displayed}</span>
+              <span className={styles.cursor}>|</span>
+            </span>
           </h1>
 
           <p className={styles.heroSub}>
-            Workverra connects skilled workers with employers in your city — with OTP login,
-            real-time booking, and UPI-based payments. No middlemen. No hassle.
+            Workverra is India's hyperlocal talent marketplace — connecting verified, skilled
+            workers with employers in your city. OTP-secured profiles, real-time booking, and
+            escrow-protected UPI payments. Hire in under 5 minutes.
           </p>
 
+          <div className={styles.trustPills}>
+            <span className={styles.pill}>✓ Verified workers</span>
+            <span className={styles.pill}>✓ Escrow payments</span>
+            <span className={styles.pill}>✓ Real-time booking</span>
+          </div>
+
           <div className={styles.heroActions}>
-            <button className={`${styles.btn} ${styles.btnPrimary}`} onClick={() => navigate('/search')}>
-              Find Workers Near You
+            <button
+              className={`${styles.btn} ${styles.btnPrimary}`}
+              onClick={() => navigate('/search')}
+            >
+              Find Workers Near You →
             </button>
-            <button className={`${styles.btn} ${styles.btnSecondary}`} onClick={() => navigate('/register?role=worker')}>
-              I'm a Worker →
+            <button
+              className={`${styles.btn} ${styles.btnSecondary}`}
+              onClick={() => navigate('/register?role=worker')}
+            >
+              I'm a Worker — Join Free
             </button>
           </div>
 
@@ -98,7 +154,7 @@ const Hero = () => {
               </div>
             </div>
 
-            <button className={styles.bookBtn} onClick={() => navigate('/book')}>
+            <button className={styles.bookBtn} onClick={() => navigate('/search')}>
               Book Now via Workverra
             </button>
           </div>

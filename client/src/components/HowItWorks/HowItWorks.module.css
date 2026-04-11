@@ -3,11 +3,27 @@
 .sectionTag { display: inline-block; padding: 6px 16px; background: var(--brand-light); color: var(--brand); font-size: 12px; font-weight: 700; letter-spacing: 1px; border-radius: 100px; text-transform: uppercase; margin-bottom: 16px; }
 .sectionTitle { font-family: var(--font-head); font-size: 38px; font-weight: 700; letter-spacing: -1px; margin-bottom: 12px; }
 .sectionSub { font-size: 17px; color: var(--text-secondary); max-width: 540px; line-height: 1.65; }
+
 .stepsGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-top: 56px; }
+
 .stepCard { padding: 32px; border-radius: 20px; border: 1px solid var(--border); background: var(--white); position: relative; transition: all 0.25s ease; }
 .stepCard:hover { border-color: var(--brand); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(26,86,219,0.08); }
-.stepNum { width: 48px; height: 48px; border-radius: 14px; background: var(--brand); color: #fff; display: flex; align-items: center; justify-content: center; font-family: var(--font-head); font-size: 20px; font-weight: 700; margin-bottom: 20px; }
+
+.stepTop { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+.stepIcon { font-size: 28px; }
+.stepNum { width: 36px; height: 36px; border-radius: 50%; background: var(--brand); color: #fff; display: flex; align-items: center; justify-content: center; font-family: var(--font-head); font-size: 16px; font-weight: 700; flex-shrink: 0; }
+
 .stepTitle { font-family: var(--font-head); font-size: 18px; font-weight: 700; margin-bottom: 10px; }
 .stepDesc { font-size: 14px; color: var(--text-secondary); line-height: 1.65; }
+
 .stepArrow { position: absolute; right: -16px; top: 50%; transform: translateY(-50%); width: 32px; height: 32px; background: var(--white); border: 1px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--brand); font-size: 16px; z-index: 2; }
-@media (max-width: 900px) { .stepsGrid { grid-template-columns: 1fr; } .stepArrow { display: none; } .sectionTitle { font-size: 28px; } }
+
+.learnMore { text-align: center; margin-top: 40px; }
+.learnMoreBtn { display: inline-block; font-size: 15px; font-weight: 600; color: var(--brand); text-decoration: none; padding: 11px 24px; border: 1.5px solid var(--brand); border-radius: 10px; transition: all 0.2s; font-family: var(--font-body); }
+.learnMoreBtn:hover { background: var(--brand); color: #fff; }
+
+@media (max-width: 900px) {
+  .stepsGrid { grid-template-columns: 1fr; }
+  .stepArrow { display: none; }
+  .sectionTitle { font-size: 28px; }
+}

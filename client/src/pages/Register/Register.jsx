@@ -5,8 +5,8 @@ import API from '../../api/axios'
 import { SKILLS_LIST, CITIES } from '../../utils/dummyData'
 import styles from './Register.module.css'
 
-const STEPS_EMPLOYER = ['Role', 'Account', 'Company']
-const STEPS_WORKER   = ['Role', 'Account', 'Profile', 'Skills']
+const STEPS_EMPLOYER = ['Role', 'Account', 'Company', 'Policy']
+const STEPS_WORKER   = ['Role', 'Account', 'Profile', 'Skills', 'Policy']
 
 const Register = () => {
   const navigate = useNavigate()
@@ -15,9 +15,10 @@ const Register = () => {
   const initialRole = searchParams.get('role') || 'employer'
 
   const [role, setRole]   = useState(initialRole)
-  const [step, setStep]   = useState(0)
+  const [step, setStep]   = useState(initialRole !== 'employer' && initialRole !== 'worker' ? 0 : 0)
   const [loading, setLoading] = useState(false)
   const [errors, setErrors]   = useState({})
+  const [policyAccepted, setPolicyAccepted] = useState(false)
 
   const [form, setForm] = useState({
     name: '', phone: '', city: '',
@@ -46,17 +47,22 @@ const Register = () => {
   const validate = () => {
     const e = {}
     if (step === 1) {
-      if (!form.name.trim())          e.name  = 'Full name is required'
+      if (!form.name.trim())            e.name  = 'Full name is required'
       if (!/^\d{10}$/.test(form.phone)) e.phone = 'Enter valid 10-digit number'
-      if (!form.city)                  e.city  = 'Select your city'
+      if (!form.city)                   e.city  = 'Select your city'
     }
     if (step === 2 && role === 'employer') {
       if (!form.companyName.trim()) e.companyName = 'Company / business name required'
     }
     if (step === 2 && role === 'worker') {
-      if (!form.skill)       e.skill      = 'Select your primary skill'
-      if (!form.experience)  e.experience = 'Enter years of experience'
-      if (!form.hourlyRate)  e.hourlyRate = 'Enter your hourly rate'
+      if (!form.skill)      e.skill      = 'Select your primary skill'
+      if (!form.experience) e.experience = 'Enter years of experience'
+      if (!form.hourlyRate) e.hourlyRate = 'Enter your hourly rate'
+    }
+    // Policy step validation
+    const policyStep = role === 'worker' ? 4 : 3
+    if (step === policyStep && !policyAccepted) {
+      e.policy = 'You must accept the policy to continue'
     }
     setErrors(e)
     return Object.keys(e).length === 0
@@ -67,9 +73,10 @@ const Register = () => {
     if (step === totalSteps - 1) {
       setLoading(true)
       try {
+        // FIX #4: Send phone as plain 10 digits — backend expects 10-digit string
         const payload = {
           name: form.name,
-          phone: `+91${form.phone}`,
+          phone: form.phone,          // ← plain 10 digits, NOT +91 prefixed
           city: form.city,
           role,
           ...(role === 'employer' ? {
@@ -80,7 +87,7 @@ const Register = () => {
             experience: Number(form.experience),
             hourlyRate: Number(form.hourlyRate),
             about: form.about,
-            skills: form.selectedSkills,
+            skills: form.selectedSkills.length > 0 ? form.selectedSkills : [form.skill],
           })
         }
         const res = await API.post('/auth/register', payload)
@@ -98,11 +105,19 @@ const Register = () => {
 
   const back = () => setStep(s => s - 1)
   const progress = Math.round((step / (totalSteps - 1)) * 100)
+  const policyStep = role === 'worker' ? 4 : 3
 
   return (
     <div className={styles.page}>
+      {/* Left Panel */}
       <div className={styles.left}>
-        <Link to="/" className={styles.brand}>Work<strong>verra</strong></Link>
+        {/* FIX #5: Logo visible on auth pages */}
+        <Link to="/" className={styles.logoLink}>
+          <img src="/images/logo.png" alt="Workverra" className={styles.logoImg}
+            onError={e => { e.target.style.display='none' }} />
+          <span className={styles.logoText}>Workverra</span>
+        </Link>
+
         <div className={styles.leftContent}>
           <h2 className={styles.leftTitle}>
             {role === 'worker' ? 'Start earning with your skills' : 'Hire verified local talent'}
@@ -123,19 +138,15 @@ const Register = () => {
         </div>
       </div>
 
+      {/* Right Panel */}
       <div className={styles.right}>
         <div className={styles.formWrap}>
-          {/* Progress bar */}
           <div className={styles.progressBar}>
             <div className={styles.progressFill} style={{ width: `${progress}%` }} />
           </div>
+          <p className={styles.stepLabel}>Step {step + 1} of {totalSteps} — {steps[step]}</p>
 
-          {/* Global submit error */}
-          {errors.submit && (
-            <div className={styles.submitError}>
-              ⚠ {errors.submit}
-            </div>
-          )}
+          {errors.submit && <div className={styles.submitError}>⚠ {errors.submit}</div>}
 
           {/* Step 0: Role */}
           {step === 0 && (
@@ -168,7 +179,8 @@ const Register = () => {
               <div className={styles.fieldGroup}>
                 <label className={styles.label}>Full Name</label>
                 <input className={`${styles.input} ${errors.name ? styles.inputError : ''}`}
-                  placeholder="Rahul Sharma" value={form.name} onChange={e => set('name', e.target.value)} />
+                  placeholder="Rahul Sharma" value={form.name}
+                  onChange={e => set('name', e.target.value)} />
                 {errors.name && <span className={styles.err}>{errors.name}</span>}
               </div>
               <div className={styles.fieldGroup}>
@@ -177,7 +189,8 @@ const Register = () => {
                   <span className={styles.phoneCode}>🇮🇳 +91</span>
                   <input className={`${styles.input} ${styles.phoneInner} ${errors.phone ? styles.inputError : ''}`}
                     placeholder="98765 43210" value={form.phone}
-                    onChange={e => set('phone', e.target.value.replace(/\D/g,'').slice(0,10))} maxLength={10} />
+                    onChange={e => set('phone', e.target.value.replace(/\D/g,'').slice(0,10))}
+                    maxLength={10} inputMode="numeric" />
                 </div>
                 {errors.phone && <span className={styles.err}>{errors.phone}</span>}
               </div>
@@ -207,7 +220,8 @@ const Register = () => {
               </div>
               <div className={styles.fieldGroup}>
                 <label className={styles.label}>Business Type (optional)</label>
-                <select className={styles.input} value={form.companyType} onChange={e => set('companyType', e.target.value)}>
+                <select className={styles.input} value={form.companyType}
+                  onChange={e => set('companyType', e.target.value)}>
                   <option value="">Select type</option>
                   {['Individual / Freelancer','Small Business','Construction','Real Estate',
                     'Restaurant / Hotel','Manufacturing','Healthcare','Retail','Other']
@@ -274,15 +288,76 @@ const Register = () => {
             </div>
           )}
 
-          {/* Navigation */}
+          {/* FIX #13: Policy step — last step for both roles */}
+          {step === policyStep && (
+            <div className={styles.stepCard}>
+              <h2 className={styles.stepTitle}>Accept Policy</h2>
+              <p className={styles.stepSub}>Please read and accept our policies before creating your account</p>
+
+              <div className={styles.policyBox}>
+                <h4 className={styles.policyHeading}>Terms of Service</h4>
+                <p className={styles.policyText}>
+                  By using Workverra, you agree to maintain accurate profile information, conduct all
+                  transactions honestly, and comply with applicable Indian laws. Workers agree to
+                  complete booked jobs professionally. Employers agree to pay for completed services.
+                  Workverra reserves the right to suspend accounts that violate these terms.
+                </p>
+
+                <h4 className={styles.policyHeading}>Privacy Policy</h4>
+                <p className={styles.policyText}>
+                  We collect your name, mobile number, city, and professional details to enable
+                  bookings and payments. Your data is stored securely and never sold to third
+                  parties. OTP verification ensures only you can access your account. Payment data
+                  is handled by Razorpay and subject to their privacy policy.
+                </p>
+
+                <h4 className={styles.policyHeading}>Community Guidelines</h4>
+                <p className={styles.policyText}>
+                  All users must treat each other respectfully. Fake reviews, fraudulent bookings,
+                  and harassment are strictly prohibited and will result in permanent account removal.
+                  Report any violations to team.workverra@gmail.com.
+                </p>
+
+                <Link to="/policy" target="_blank" className={styles.fullPolicyLink}>
+                  Read full policy →
+                </Link>
+              </div>
+
+              <label className={`${styles.policyCheckRow} ${errors.policy ? styles.policyCheckError : ''}`}>
+                <input
+                  type="checkbox"
+                  checked={policyAccepted}
+                  onChange={e => {
+                    setPolicyAccepted(e.target.checked)
+                    if (e.target.checked) setErrors(er => ({ ...er, policy: '' }))
+                  }}
+                  className={styles.checkbox}
+                />
+                <span>
+                  I have read and agree to Workverra's{' '}
+                  <Link to="/policy" target="_blank" className={styles.policyLinkInline}>Terms of Service</Link>
+                  {' '}and{' '}
+                  <Link to="/policy" target="_blank" className={styles.policyLinkInline}>Privacy Policy</Link>
+                </span>
+              </label>
+              {errors.policy && <span className={styles.err}>{errors.policy}</span>}
+            </div>
+          )}
+
+          {/* Navigation buttons */}
           <div className={styles.navRow}>
             {step > 0 && (
               <button type="button" className={styles.backBtn} onClick={back}>← Back</button>
             )}
-            <button type="button" className={`${styles.nextBtn} ${loading ? styles.loading : ''}`}
-              onClick={next} disabled={loading}>
-              {loading ? <span className={styles.spinner}></span>
-               : step === totalSteps - 1 ? 'Create Account 🎉' : 'Continue →'}
+            <button
+              type="button"
+              className={`${styles.nextBtn} ${loading ? styles.loading : ''}`}
+              onClick={next}
+              disabled={loading || (step === policyStep && !policyAccepted)}
+            >
+              {loading
+                ? <span className={styles.spinner}></span>
+                : step === totalSteps - 1 ? 'Create Account 🎉' : 'Continue →'}
             </button>
           </div>
 

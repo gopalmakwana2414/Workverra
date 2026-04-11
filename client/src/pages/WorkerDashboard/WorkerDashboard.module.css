@@ -1,5 +1,7 @@
-/* Worker Dashboard */
+/* Worker Dashboard — Complete CSS */
 .page { display:flex; min-height:100vh; background:#f9fafb; }
+
+/* ── Sidebar ── */
 .sidebar { width:260px; background:#fff; border-right:1px solid #e5e7eb; display:flex; flex-direction:column; position:sticky; top:0; height:100vh; overflow-y:auto; flex-shrink:0; }
 .sidebarTop { padding:24px 20px; border-bottom:1px solid #f3f4f6; }
 .userAvatar { width:56px; height:56px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:1.2rem; margin-bottom:12px; }
@@ -12,33 +14,46 @@
 .navActive { background:#eff6ff; color:#1A56DB; font-weight:600; border-right:3px solid #1A56DB; }
 .navIcon { font-size:1.1rem; width:22px; }
 .navBadge { background:#dc2626; color:#fff; border-radius:999px; font-size:.7rem; font-weight:700; padding:2px 6px; margin-left:auto; }
+
+/* Availability toggle */
 .availToggleWrap { padding:16px 20px; border-top:1px solid #f3f4f6; display:flex; align-items:center; justify-content:space-between; }
 .availLabel { font-size:.825rem; color:#374151; font-weight:600; }
 .toggle { width:44px; height:24px; border-radius:999px; background:#e5e7eb; cursor:pointer; position:relative; transition:background .2s; }
 .toggleOn { background:#059669; }
 .toggleKnob { position:absolute; top:3px; left:3px; width:18px; height:18px; border-radius:50%; background:#fff; box-shadow:0 1px 4px rgba(0,0,0,.2); transition:transform .2s; }
 .toggleOn .toggleKnob { transform:translateX(20px); }
+
 .logoutBtn { margin:0 16px 20px; padding:10px; border:1.5px solid #fecaca; border-radius:8px; color:#dc2626; background:none; cursor:pointer; font-size:.875rem; font-weight:600; transition:all .15s; }
 .logoutBtn:hover { background:#fef2f2; }
+
+/* Mobile header */
 .mobileHeader { display:none; background:#fff; border-bottom:1px solid #e5e7eb; padding:12px 16px; align-items:center; gap:12px; }
 .menuBtn { background:none; border:none; font-size:1.4rem; cursor:pointer; color:#374151; }
 .mobileTitle { font-family:'Sora',sans-serif; font-weight:700; color:#111827; }
+
+/* ── Main ── */
 .main { flex:1; min-width:0; overflow-y:auto; }
 .section { padding:32px; max-width:900px; }
 .sectionHeader { margin-bottom:28px; }
 .pageTitle { font-family:'Sora',sans-serif; font-size:1.6rem; font-weight:700; color:#111827; }
 .pageSub { color:#6b7280; font-size:.9rem; margin-top:4px; }
 .subTitle { font-family:'Sora',sans-serif; font-size:1.1rem; font-weight:700; color:#111827; margin:28px 0 16px; }
+
+/* Stats grid */
 .statsGrid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:32px; }
 .statCard { background:#fff; border-radius:14px; padding:20px; box-shadow:0 2px 12px rgba(0,0,0,.05); text-align:center; }
 .statIcon { font-size:1.5rem; margin-bottom:8px; }
 .statVal { font-size:1.4rem; font-weight:700; color:#111827; font-family:'Sora',sans-serif; }
 .statLabel { font-size:.8rem; color:#6b7280; margin-top:2px; }
+
+/* Alert banner */
 .alertBanner { background:#eff6ff; border:1px solid #bfdbfe; border-radius:12px; padding:16px 20px; display:flex; align-items:center; gap:14px; margin-top:4px; }
 .alertBanner span { font-size:1.3rem; }
 .alertBanner strong { color:#1A56DB; font-weight:700; display:block; margin-bottom:2px; }
 .alertBanner p { color:#374151; font-size:.85rem; }
 .alertBtn { margin-left:auto; padding:8px 18px; background:#1A56DB; color:#fff; border:none; border-radius:8px; cursor:pointer; font-weight:600; font-size:.875rem; white-space:nowrap; }
+
+/* Bookings list */
 .bookingsList { display:flex; flex-direction:column; gap:12px; }
 .bookingCard { background:#fff; border-radius:14px; padding:18px 20px; box-shadow:0 2px 10px rgba(0,0,0,.05); display:flex; align-items:flex-start; justify-content:space-between; gap:16px; }
 .bookingInfo { flex:1; }
@@ -50,20 +65,69 @@
 .acceptBtn { padding:7px 14px; background:#059669; color:#fff; border:none; border-radius:8px; cursor:pointer; font-size:.825rem; font-weight:600; }
 .rejectBtn { padding:7px 14px; border:1.5px solid #dc2626; color:#dc2626; background:#fff; border-radius:8px; cursor:pointer; font-size:.825rem; font-weight:600; }
 .payAmount { font-weight:700; color:#111827; font-size:1rem; }
+
+/* Earnings */
 .earningsCards { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:32px; }
 .earnCard { border-radius:16px; padding:24px; color:#fff; }
 .earnLabel { font-size:.8rem; font-weight:500; opacity:.85; margin-bottom:8px; }
 .earnVal { font-size:1.5rem; font-weight:700; font-family:'Sora',sans-serif; }
+
+/* ── Edit Profile form — FIXED ── */
 .profileForm { background:#fff; border-radius:16px; padding:28px; box-shadow:0 2px 12px rgba(0,0,0,.06); }
-.formRow { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
-.fieldGroup { display:flex; flex-direction:column; gap:6px; margin-bottom:16px; }
-.label { font-size:.85rem; font-weight:600; color:#374151; }
-.input { padding:10px 14px; border:1.5px solid #e5e7eb; border-radius:10px; font-family:'DM Sans',sans-serif; font-size:.9rem; color:#1F2937; outline:none; transition:border .2s; }
-.input:focus { border-color:#1A56DB; }
-.textarea { resize:vertical; }
-.saveBtn { padding:12px 28px; background:#1A56DB; color:#fff; border:none; border-radius:10px; cursor:pointer; font-size:.95rem; font-weight:600; transition:all .2s; }
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 0;
+}
+
+/* fieldGroup: correct spacing between label → input, and between fields */
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;           /* gap between label and input */
+  margin-bottom: 18px; /* gap between consecutive fields */
+  width: 100%;
+}
+
+.fieldGroup:last-of-type { margin-bottom: 0; }
+
+.label {
+  font-size: .85rem;
+  font-weight: 600;
+  color: #374151;
+  display: block;     /* ensures label sits on its own line */
+}
+
+.input {
+  width: 100%;        /* inputs fill their container */
+  padding: 10px 14px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .9rem;
+  color: #1F2937;
+  background: #fff;
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+
+.input:focus {
+  border-color: #1A56DB;
+  box-shadow: 0 0 0 3px rgba(26,86,219,.08);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 96px;
+}
+
+.saveBtn { padding:12px 28px; background:#1A56DB; color:#fff; border:none; border-radius:10px; cursor:pointer; font-size:.95rem; font-weight:600; transition:all .2s; margin-top:8px; }
 .saveBtn:hover { background:#1344B8; }
 .saveBtnSuccess { background:#059669 !important; }
+
+/* Notifications */
 .notifList { display:flex; flex-direction:column; gap:10px; }
 .notifCard { background:#fff; border-radius:12px; padding:16px 18px; box-shadow:0 2px 8px rgba(0,0,0,.05); display:flex; align-items:flex-start; gap:12px; cursor:pointer; border:1.5px solid transparent; transition:border .15s; }
 .notifUnread { border-color:#dbeafe; background:#f0f7ff; }
@@ -74,10 +138,18 @@
 .notifTime { color:#9ca3af; font-size:.775rem; margin-top:4px; }
 .notifDot { width:10px; height:10px; border-radius:50%; background:#1A56DB; flex-shrink:0; margin-top:4px; }
 .markAllBtn { padding:8px 16px; border:1.5px solid #1A56DB; border-radius:8px; color:#1A56DB; background:#fff; cursor:pointer; font-size:.825rem; font-weight:600; }
+
+/* Empty state */
 .emptyState { text-align:center; padding:60px; color:#6b7280; }
 .emptyState span { font-size:3rem; display:block; margin-bottom:12px; }
+
+/* Responsive */
 @media(max-width:900px) { .statsGrid { grid-template-columns:repeat(2,1fr); } .earningsCards { grid-template-columns:1fr 1fr; } .formRow { grid-template-columns:1fr; } }
-@media(max-width:768px) { .sidebar { position:fixed;top:0;left:0;height:100vh;z-index:100;transform:translateX(-100%);transition:transform .3s; } .sidebarOpen { transform:none; box-shadow:4px 0 20px rgba(0,0,0,.15); } .mobileHeader { display:flex; } .section { padding:20px 16px; } .statsGrid { grid-template-columns:1fr 1fr; } .earningsCards { grid-template-columns:1fr; } }
-
-
-
+@media(max-width:768px) {
+  .sidebar { position:fixed; top:0; left:0; height:100vh; z-index:100; transform:translateX(-100%); transition:transform .3s; }
+  .sidebarOpen { transform:none; box-shadow:4px 0 20px rgba(0,0,0,.15); }
+  .mobileHeader { display:flex; }
+  .section { padding:20px 16px; }
+  .statsGrid { grid-template-columns:1fr 1fr; }
+  .earningsCards { grid-template-columns:1fr; }
+}

@@ -10,21 +10,21 @@ const sections = [
     content: [
       {
         heading: 'Account Accuracy',
-        body: 'You agree to provide accurate, current, and complete information during registration. You are responsible for maintaining the confidentiality of your account credentials. Workverra is not liable for any loss resulting from unauthorized use of your account.'
+        body: 'You agree to provide accurate, current, and complete information during registration. You are responsible for maintaining the confidentiality of your account credentials. Workverra is not liable for any loss resulting from unauthorized use of your account.',
       },
       {
         heading: 'Acceptable Use',
-        body: 'You must not use the platform for any unlawful purpose, to post false or misleading information, to harass or harm other users, or to engage in fraudulent activity. Any misuse will result in immediate account suspension.'
+        body: 'You must not use the platform for any unlawful purpose, post false or misleading information, harass or harm other users, or engage in fraudulent activity. Any misuse will result in immediate account suspension.',
       },
       {
         heading: 'Worker Responsibilities',
-        body: 'Workers must accurately represent their skills, qualifications, and availability. Workers are solely responsible for the quality of their work. Workverra acts as a marketplace and does not guarantee job outcomes or disputes between workers and employers.'
+        body: 'Workers must accurately represent their skills, qualifications, and availability. Workers are solely responsible for the quality of their work. Workverra acts as a marketplace and does not guarantee job outcomes.',
       },
       {
         heading: 'Employer Responsibilities',
-        body: 'Employers must provide clear job descriptions, agreed compensation, and a safe working environment. Employers must pay the agreed amount through the platform and must not attempt to bypass the payment system.'
+        body: 'Employers must provide clear job descriptions, agreed compensation, and a safe working environment. Employers must pay the agreed amount through the platform and must not attempt to bypass the payment system.',
       },
-    ]
+    ],
   },
   {
     id: 'payment',
@@ -33,94 +33,113 @@ const sections = [
     content: [
       {
         heading: 'Free Tier',
-        body: 'Both workers and employers can register once for free. Free accounts have limited features: Workers can receive up to 5 bookings/month. Employers can post up to 2 jobs/month. Free accounts do not include verified badges or priority listing.'
+        body: 'Both workers and employers can register for free. Free accounts include limited features: Workers can receive up to 5 bookings/month. Employers can post up to 2 jobs/month.',
       },
       {
         heading: 'Paid Subscriptions',
-        body: 'Worker Monthly: ₹49/month. Worker Yearly: ₹499/year. Employer Monthly: ₹99/month. Employer Yearly: ₹999/year. Subscriptions auto-renew unless cancelled before the renewal date. You can cancel anytime from your dashboard.'
+        body: 'Worker Monthly: ₹49/month. Worker Yearly: ₹499/year. Employer Monthly: ₹99/month. Employer Yearly: ₹999/year. Subscriptions auto-renew unless cancelled before the renewal date.',
       },
       {
         heading: 'Payment Processing',
-        body: 'All payments are processed securely via Razorpay. Workverra does not store your card or UPI credentials. Transaction data is encrypted and handled under PCI-DSS compliance standards.'
+        body: 'All payments are processed securely via Razorpay. Workverra does not store your card or UPI credentials. Transaction data is encrypted and handled under PCI-DSS compliance standards.',
       },
       {
         heading: 'Escrow System',
-        body: 'When an employer pays for a booking, funds are held in escrow by Workverra. Funds are only released to the worker after the employer confirms job completion. In case of disputes, Workverra reserves the right to mediate and make a final decision.'
+        body: 'When an employer pays for a booking, funds are held in escrow by Workverra. Funds are only released to the worker after the employer confirms job completion. In case of disputes, Workverra reserves the right to mediate and make a final decision.',
       },
-      {
-        heading: 'Refund Policy',
-        body: 'Subscription fees are non-refundable once the billing period has started. Booking payments in escrow can be refunded if the worker fails to show up or the booking is cancelled before acceptance. Refunds are processed within 5-7 business days.'
-      },
-    ]
+    ],
   },
   {
     id: 'privacy',
     icon: '🔒',
-    title: 'Privacy & Data Usage',
+    title: 'Privacy Policy',
     content: [
       {
         heading: 'Data We Collect',
-        body: 'We collect: Name, phone number, city, and profile information you provide. Booking and payment transaction history. Device information, IP address, and usage patterns for security and analytics. We do not sell your personal data to third parties.'
+        body: 'We collect your name, mobile number, city, skill information, and professional details to enable bookings and payments. We also collect usage data to improve our services.',
       },
       {
         heading: 'How We Use Your Data',
-        body: 'Your data is used to: Operate and improve the Workverra platform. Match workers with employers based on location and skills. Send OTP verification and important service notifications. Comply with legal obligations and prevent fraud.'
+        body: 'Your data is used to create your profile, match you with workers or employers, process payments, send OTP verification, and send service notifications. We never sell your data to third parties.',
       },
       {
-        heading: 'Data Storage & Security',
-        body: 'All data is stored on secure servers with encryption at rest and in transit. We use industry-standard security practices including JWT authentication, HTTPS, and regular security audits.'
+        heading: 'OTP & Authentication',
+        body: 'Your mobile number is verified via OTP to ensure account security. OTPs expire within 10 minutes and are single-use. We use JWT tokens for session management with a 30-day expiry.',
       },
       {
-        heading: 'Your Rights',
-        body: 'You have the right to: Access the personal data we hold about you. Request correction of inaccurate data. Request deletion of your account and associated data. Withdraw consent at any time. Contact us at privacy@workverra.in for any data requests.'
+        heading: 'Data Retention',
+        body: 'We retain your account data as long as your account is active. You may request deletion of your account and data by contacting team.workverra@gmail.com. Booking and payment records may be retained for legal compliance.',
       },
-      {
-        heading: 'Cookies',
-        body: 'Workverra uses essential cookies for authentication and session management. We do not use third-party advertising cookies. You can clear cookies at any time through your browser settings.'
-      },
-    ]
+    ],
   },
   {
-    id: 'rules',
-    icon: '📋',
-    title: 'Platform Rules',
+    id: 'conduct',
+    icon: '🤝',
+    title: 'Community Guidelines',
     content: [
       {
+        heading: 'Respectful Conduct',
+        body: 'All users must treat each other with respect. Harassment, discrimination, and abuse of any kind are strictly prohibited and will result in permanent account removal.',
+      },
+      {
         heading: 'Prohibited Activities',
-        body: 'The following are strictly prohibited: Creating fake accounts or impersonating others. Posting misleading job offers or skill claims. Attempting to contact workers or employers outside the platform to avoid fees. Sharing abusive, discriminatory, or harmful content. Using the platform for any illegal services.'
+        body: 'Fake reviews, fraudulent bookings, impersonation, and circumventing the escrow payment system are all prohibited. These violations will result in immediate and permanent suspension.',
       },
       {
-        heading: 'Dispute Resolution',
-        body: 'In case of disputes between workers and employers, both parties should first attempt to resolve the issue directly. If unresolved, contact Workverra support at support@workverra.in. Workverra will review evidence from both parties and make a binding decision within 7 business days.'
+        heading: 'Reporting Violations',
+        body: 'Report any violations or suspicious activity to team.workverra@gmail.com. We investigate every report and take appropriate action within 48 hours.',
+      },
+    ],
+  },
+  {
+    id: 'termination',
+    icon: '🚫',
+    title: 'Account Termination',
+    content: [
+      {
+        heading: 'By User',
+        body: 'You may delete your account at any time from your dashboard settings or by contacting team.workverra@gmail.com. Deletion removes your profile from public view immediately.',
       },
       {
-        heading: 'Account Suspension',
-        body: 'Workverra reserves the right to suspend or permanently ban accounts that violate these terms. Users will be notified via their registered mobile number. Suspended users may appeal the decision within 14 days by contacting support.'
+        heading: 'By Workverra',
+        body: 'We reserve the right to suspend or permanently ban accounts that violate these terms, with or without prior notice. Users with pending payments or active bookings will have those resolved before termination.',
+      },
+    ],
+  },
+  {
+    id: 'contact',
+    icon: '📬',
+    title: 'Contact & Grievances',
+    content: [
+      {
+        heading: 'General Queries',
+        // FIX #6+12: correct email and address
+        body: 'For general queries, contact us at team.workverra@gmail.com or call +91 8959465264 (Mon–Sat, 9 AM – 7 PM IST).',
       },
       {
-        heading: 'Changes to Policy',
-        body: 'Workverra may update these policies at any time. Users will be notified of significant changes via SMS or in-app notification. Continued use of the platform after changes constitute acceptance of the updated terms.'
+        heading: 'Registered Address',
+        body: '18, Shree Shyam Bhavan Tukral, Ujjain, Madhya Pradesh – 456550, India.',
       },
       {
-        heading: 'Governing Law',
-        body: 'These terms are governed by the laws of India. Any disputes shall be subject to the exclusive jurisdiction of courts in Indore, Madhya Pradesh, India.'
+        heading: 'Grievance Officer',
+        body: 'For formal grievances under the IT Act, contact Gopal Makwana at team.workverra@gmail.com. We aim to resolve all grievances within 30 days.',
       },
-    ]
+    ],
   },
 ]
 
 const PolicyPage = () => {
-  const [active, setActive] = useState('responsibilities')
+  const [activeSection, setActiveSection] = useState(sections[0].id)
 
   return (
     <div className={styles.page}>
       {/* Header */}
       <div className={styles.header}>
         <div className={styles.headerInner}>
-          <div className={styles.headerBadge}>Legal &amp; Policies</div>
-          <h1 className={styles.headerTitle}>Workverra Policies</h1>
-          <p className={styles.headerSub}>
-            Last updated: April 2026 · Effective immediately for all users
+          <span className={styles.badge}>Legal</span>
+          <h1 className={styles.title}>Terms, Privacy & Policy</h1>
+          <p className={styles.sub}>
+            Last updated: April 2026 · Effective from: January 2026
           </p>
         </div>
       </div>
@@ -132,48 +151,63 @@ const PolicyPage = () => {
             <a
               key={s.id}
               href={`#${s.id}`}
-              className={`${styles.navItem} ${active === s.id ? styles.navActive : ''}`}
-              onClick={() => setActive(s.id)}
+              className={`${styles.navItem} ${activeSection === s.id ? styles.navActive : ''}`}
+              onClick={() => setActiveSection(s.id)}
             >
-              <span className={styles.navIcon}>{s.icon}</span>
-              {s.title}
+              <span>{s.icon}</span>
+              <span>{s.title}</span>
             </a>
           ))}
-          <div className={styles.sidebarNote}>
-            <p>Questions? Email us:</p>
-            <a href="mailto:support@workverra.in" className={styles.emailLink}>
-              support@workverra.in
+          <div className={styles.sidebarFooter}>
+            <p>Questions?</p>
+            <a href="mailto:team.workverra@gmail.com" className={styles.emailLink}>
+              team.workverra@gmail.com
             </a>
           </div>
         </nav>
 
         {/* Content */}
-        <div className={styles.content}>
-          {sections.map(s => (
-            <section key={s.id} id={s.id} className={styles.section}>
+        <main className={styles.content}>
+          <div className={styles.intro}>
+            <p>
+              These Terms of Service, Privacy Policy, and Community Guidelines govern your use of
+              the Workverra platform. By registering or using our services, you agree to these terms.
+              Please read them carefully. If you have any questions, contact us at{' '}
+              <a href="mailto:team.workverra@gmail.com" className={styles.inlineLink}>
+                team.workverra@gmail.com
+              </a>.
+            </p>
+          </div>
+
+          {sections.map(section => (
+            <div key={section.id} id={section.id} className={styles.section}>
               <div className={styles.sectionHeader}>
-                <span className={styles.sectionIcon}>{s.icon}</span>
-                <h2 className={styles.sectionTitle}>{s.title}</h2>
+                <span className={styles.sectionIcon}>{section.icon}</span>
+                <h2 className={styles.sectionTitle}>{section.title}</h2>
               </div>
-              {s.content.map(item => (
-                <div key={item.heading} className={styles.item}>
+              {section.content.map(item => (
+                <div key={item.heading} className={styles.policyItem}>
                   <h3 className={styles.itemHeading}>{item.heading}</h3>
                   <p className={styles.itemBody}>{item.body}</p>
                 </div>
               ))}
-            </section>
+            </div>
           ))}
 
-          {/* Footer note */}
-          <div className={styles.footerNote}>
+          <div className={styles.footer}>
             <p>
-              By using Workverra, you agree to these policies.
-              For questions, contact{' '}
-              <a href="mailto:support@workverra.in">support@workverra.in</a>
+              By using Workverra, you confirm that you have read, understood, and agree to these
+              terms. For a printed copy, contact{' '}
+              <a href="mailto:team.workverra@gmail.com" className={styles.inlineLink}>
+                team.workverra@gmail.com
+              </a>.
             </p>
-            <Link to="/" className={styles.homeLink}>← Back to Home</Link>
+            <div className={styles.footerActions}>
+              <Link to="/" className={styles.backBtn}>← Back to Home</Link>
+              <Link to="/contact" className={styles.contactBtn}>Contact Us</Link>
+            </div>
           </div>
-        </div>
+        </main>
       </div>
     </div>
   )
