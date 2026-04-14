@@ -1,7 +1,6 @@
-/* ════════════════════════════════════
-   NAVBAR — Workverra
-════════════════════════════════════ */
+/* Navbar — Workverra */
 
+/* Sticky top bar with gradient */
 .nav {
   position: sticky;
   top: 0;
@@ -10,6 +9,7 @@
   transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* Darker shade + shadow after scrolling */
 .nav.scrolled {
   background: linear-gradient(135deg, #3730A3 0%, #6D28D9 45%, #DB2777 100%);
   box-shadow: 0 4px 30px rgba(79, 70, 229, 0.45);
@@ -59,12 +59,12 @@
 .logoTagline {
   font-size: 10px;
   font-weight: 400;
-  color: rgba(255,255,255,0.80);
+  color: rgba(255, 255, 255, 0.80);
   letter-spacing: 0.2px;
   white-space: nowrap;
 }
 
-/* ── Nav Links ── */
+/* ── Navigation links ── */
 .navLinks {
   display: flex;
   gap: 28px;
@@ -76,10 +76,11 @@
   justify-content: center;
 }
 
+/* Links */
 .navLinks a {
   font-size: 14px;
   font-weight: 500;
-  color: rgba(255,255,255,0.85);
+  color: rgba(255, 255, 255, 0.85);
   text-decoration: none;
   transition: color 0.2s;
   position: relative;
@@ -87,56 +88,53 @@
   white-space: nowrap;
 }
 
-.navLinks a::after {
+/* 🔥 Buttons styled EXACTLY like links */
+.navLinks button {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.85);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.2s;
+  position: relative;
+  padding-bottom: 3px;
+  white-space: nowrap;
+}
+
+/* Underline animation (for both) */
+.navLinks a::after,
+.navLinks button::after {
   content: '';
   position: absolute;
-  bottom: 0; left: 0;
-  width: 0; height: 2px;
-  background: rgba(255,255,255,0.9);
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.9);
   border-radius: 2px;
   transition: width 0.25s ease;
 }
 
-.navLinks a:hover { color: #ffffff; }
-.navLinks a:hover::after { width: 100%; }
+/* Hover effects */
+.navLinks a:hover,
+.navLinks button:hover {
+  color: #ffffff;
+}
 
-/* ── Search ── */
-.searchForm {
+.navLinks a:hover::after,
+.navLinks button:hover::after {
+  width: 100%;
+}
+
+/* ── Desktop CTA buttons ── */
+.navCta {
   display: flex;
+  gap: 10px;
   align-items: center;
-  background: rgba(255,255,255,0.15);
-  border: 1.5px solid rgba(255,255,255,0.3);
-  border-radius: 10px;
-  padding: 0 12px;
-  gap: 8px;
-  height: 38px;
-  min-width: 200px;
-  transition: all 0.25s;
   flex-shrink: 0;
 }
-
-.searchForm:focus-within {
-  background: rgba(255,255,255,0.22);
-  border-color: rgba(255,255,255,0.7);
-  min-width: 240px;
-}
-
-.searchIcon { color: rgba(255,255,255,0.7); display: flex; align-items: center; flex-shrink:0; }
-
-.searchInput {
-  background: transparent;
-  border: none;
-  outline: none;
-  font-size: 13px;
-  color: #ffffff;
-  width: 100%;
-  font-family: inherit;
-}
-
-.searchInput::placeholder { color: rgba(255,255,255,0.55); }
-
-/* ── CTA Buttons ── */
-.navCta { display: flex; gap: 10px; align-items: center; flex-shrink: 0; }
 
 .btnGhost {
   padding: 8px 18px;
@@ -145,14 +143,14 @@
   font-weight: 500;
   color: #ffffff;
   background: transparent;
-  border: 1.5px solid rgba(255,255,255,0.55);
+  border: 1.5px solid rgba(255, 255, 255, 0.55);
   cursor: pointer;
   transition: all 0.22s ease;
   white-space: nowrap;
 }
 
 .btnGhost:hover {
-  background: rgba(255,255,255,0.18);
+  background: rgba(255, 255, 255, 0.18);
   border-color: #ffffff;
   transform: translateY(-1px);
 }
@@ -164,7 +162,7 @@
   font-weight: 700;
   color: #ffffff;
   background: #1E1B4B;
-  border: 1.5px solid rgba(255,255,255,0.15);
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
   cursor: pointer;
   transition: all 0.22s ease;
   white-space: nowrap;
@@ -191,7 +189,8 @@
 
 .hamburger span {
   display: block;
-  width: 24px; height: 2px;
+  width: 24px;
+  height: 2px;
   background: #ffffff;
   border-radius: 2px;
   transition: all 0.3s ease;
@@ -202,12 +201,10 @@
 .hamburgerOpen span:nth-child(2) { opacity: 0; transform: scaleX(0); }
 .hamburgerOpen span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-/* ── Mobile auth row — hidden on desktop ── */
+/* Mobile auth */
 .mobileAuthRow { display: none; }
 
-/* ══════════════════════════════════
-   MOBILE  ≤ 900px
-══════════════════════════════════ */
+/* ── Mobile ── */
 @media (max-width: 900px) {
 
   .navInner { padding: 0 5%; gap: 0; }
@@ -215,7 +212,9 @@
   .navLinks {
     display: none;
     position: absolute;
-    top: 70px; left: 0; right: 0;
+    top: 70px;
+    left: 0;
+    right: 0;
     background: linear-gradient(180deg, #4F46E5 0%, #7C3AED 100%);
     border-bottom: 1px solid rgba(255,255,255,0.15);
     padding: 16px 5% 24px;
@@ -228,12 +227,9 @@
 
   .navLinks.open { display: flex; }
 
-  .searchForm { display: none; }
-  .navCta     { display: none; }
+  .navCta { display: none; }
+  .hamburger { display: flex; margin-left: auto; }
 
-  .hamburger  { display: flex; margin-left: auto; }
-
-  /* Mobile auth row — shown at bottom of menu */
   .mobileAuthRow {
     display: flex;
     flex-direction: column;
