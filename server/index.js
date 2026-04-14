@@ -32,7 +32,7 @@ app.use(helmet())
 // ── Socket.io Setup ──
 const io = new Server(server, {
   cors: {
-    origin: process.env.CLIENT_URL || 'http://localhost:3000',
+    origin: process.env.CLIENT_URL,
     methods: ['GET', 'POST'],
   },
 })
@@ -62,7 +62,7 @@ app.use('/api', limiter)
 
 // ── Middleware ──
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:3000',
+  origin: process.env.CLIENT_URL,
   credentials: true,
 }))
 
