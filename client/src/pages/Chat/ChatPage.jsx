@@ -5,7 +5,7 @@ import API from '../../api/axios'
 import { io } from 'socket.io-client'
 import styles from './ChatPage.module.css'
 
-const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000'
+const SOCKET_URL = import.meta.env.VITE_SOCKET_URL
 
 const ChatPage = () => {
   const { userId: paramUserId } = useParams()
