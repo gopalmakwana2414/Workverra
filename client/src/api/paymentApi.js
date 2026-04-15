@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API = import.meta.env.VITE_API_URL
+const API = "https://sensitive-monorail-answering.ngrok-free.dev"
 
 const authHeaders = (token) => ({ headers: { Authorization: `Bearer ${token}` } })
 
