@@ -1,18 +1,22 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://sensitive-monorail-answering.ngrok-free.dev/api",
+  baseURL: "https://workverra-production.up.railway.app/api",
   timeout: 15000,
 });
 
+// Attach token automatically
 API.interceptors.request.use((req) => {
   const token = localStorage.getItem("sb_token");
+
   if (token) {
     req.headers.Authorization = `Bearer ${token}`;
   }
+
   return req;
 });
 
+// Handle auth errors globally
 API.interceptors.response.use(
   (res) => res,
   (err) => {
