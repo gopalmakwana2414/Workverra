@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import API from '../../api/axios'
 import styles from './ContactPage.module.css'
 
-// FIX #6+12: Correct address and email
 const CONTACT_INFO = [
   {
     icon: '📞',
@@ -14,25 +14,25 @@ const CONTACT_INFO = [
   {
     icon: '✉️',
     label: 'Email',
-    value: 'team.workverra@gmail.com',       // FIX #6
+    value: 'team.workverra@gmail.com',
     sub: 'We reply within 24 hours',
-    href: 'mailto:team.workverra@gmail.com', // FIX: was wrong href before
+    href: 'mailto:team.workverra@gmail.com',
   },
   {
     icon: '🏢',
     label: 'Address',
     value: 'Workverra Technologies Pvt. Ltd.',
-    // FIX #12: Correct address
     sub: '18, Shree Shyam Bhavan Tukral, Ujjain, Madhya Pradesh – 456550',
     href: null,
   },
 ]
 
 const ContactPage = () => {
-  const [form, setForm]       = useState({ name:'', email:'', phone:'', subject:'', message:'' })
+  const [form, setForm]       = useState({ name: '', email: '', phone: '', subject: '', message: '' })
   const [errors, setErrors]   = useState({})
   const [loading, setLoading] = useState(false)
   const [sent, setSent]       = useState(false)
+  const [serverError, setServerError] = useState('')
 
   const set = (k, v) => { setForm(f => ({ ...f, [k]: v })); setErrors(e => ({ ...e, [k]: '' })) }
 
@@ -50,9 +50,14 @@ const ContactPage = () => {
     e.preventDefault()
     if (!validate()) return
     setLoading(true)
-    await new Promise(r => setTimeout(r, 1200))
+    setServerError('')
+    try {
+      await API.post('/contact', form)
+      setSent(true)
+    } catch (err) {
+      setServerError(err.response?.data?.message || 'Failed to send message. Please try again.')
+    }
     setLoading(false)
-    setSent(true)
   }
 
   return (
@@ -107,7 +112,7 @@ const ContactPage = () => {
               <p className={styles.successSub}>
                 Thank you for reaching out. Our team will get back to you within 24 hours at <strong>{form.email}</strong>.
               </p>
-              <button className={styles.sendAgain} onClick={() => { setSent(false); setForm({ name:'', email:'', phone:'', subject:'', message:'' }) }}>
+              <button className={styles.sendAgain} onClick={() => { setSent(false); setForm({ name: '', email: '', phone: '', subject: '', message: '' }) }}>
                 Send another message
               </button>
             </div>
@@ -115,6 +120,7 @@ const ContactPage = () => {
             <div className={styles.formCard}>
               <h2 className={styles.formTitle}>Send us a Message</h2>
               <p className={styles.formSub}>Fill in the form and we'll respond within 24 hours.</p>
+              {serverError && <div className={styles.serverError}>⚠ {serverError}</div>}
               <form onSubmit={handleSubmit} className={styles.form} noValidate>
                 <div className={styles.row2}>
                   <div className={styles.field}>
